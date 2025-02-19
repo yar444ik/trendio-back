@@ -1,0 +1,20 @@
+token:
+  signing:
+    key: basebasebasebasebasebasebasebasebasebasebasebasebasebasebasebase
+spring:
+  hibernate:
+    dialect: org.hibernate.dialect.PostgreSQL14Dialect
+  datasource:
+    username: postgres
+    url: jdbc:postgresql://localhost:5432/trendio
+    driverClassName: org.postgresql.Driver
+    password: 'postgres'
+  application:
+    name: trendio
+  jpa:
+    hibernate:
+      ddl-auto: create
+log4j:
+  appender:
+    FILE:
+      encoding: UTF-8
