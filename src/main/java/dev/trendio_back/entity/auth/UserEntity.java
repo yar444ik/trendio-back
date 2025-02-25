@@ -23,21 +23,21 @@ public class UserEntity {
     private boolean enabled;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "role", nullable = false)
+    @Column(name = "role"/*, nullable = false*/)
     private Role role;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "password_id", nullable = false)
+    @JoinColumn(name = "password_id")
     private PasswordEntity passwordEntity;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "avatar_id", nullable = false)
+    @JoinColumn(name = "avatar_id")
     private ImageEntity avatar;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "tags_id")
     private List<TagEntity> tags;
-    @OneToMany(mappedBy = "like",fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "likes_id")
     private List<LikeEntity> likes;
     @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
