@@ -23,7 +23,7 @@ public class UserEntity {
     private boolean enabled;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "role")
+    @Column(name = "role"/*, nullable = false*/)
     private Role role;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
