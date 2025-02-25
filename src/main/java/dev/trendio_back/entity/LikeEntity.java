@@ -1,13 +1,14 @@
 package dev.trendio_back.entity;
 
+import dev.trendio_back.entity.auth.UserEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.math.BigDecimal;
 import java.sql.Date;
+import java.util.List;
 
 @Entity
 @Getter
@@ -16,18 +17,17 @@ import java.sql.Date;
 @NoArgsConstructor
 @Table(name = "likes")
 public class LikeEntity {
-    public LikeEntity(Long id, Date createDate, long userId) {
-        this.id = id;
-        this.createDate = createDate;
-        this.userId = userId;
-    }
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
     @Column(name = "create_date")
     private Date createDate;
-    @Column(name = "user_id")
-    private long userId;
-    //private long requestId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private UserEntity user;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "requests_id")
+    private List<RequestEntity> requests;
 }
