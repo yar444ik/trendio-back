@@ -1,7 +1,13 @@
 package dev.trendio_back.repository;
 
 import dev.trendio_back.entity.ImageEntity;
-import org.springframework.data.jpa.repository.JpaRepository;
+import dev.trendio_back.entity.TagEntity;
+import dev.trendio_back.entity.auth.UserEntity;
+import org.springframework.data.repository.CrudRepository;
 
-public interface ImageRepository extends JpaRepository<ImageEntity, Long> {
+import java.util.List;
+import java.util.Optional;
+
+public interface ImageRepository extends CrudRepository<ImageEntity, Long> {
+    Optional<ImageEntity> findById(Long imageId);
 }

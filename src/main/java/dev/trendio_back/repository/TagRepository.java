@@ -1,7 +1,10 @@
 package dev.trendio_back.repository;
 
 import dev.trendio_back.entity.TagEntity;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
 
-public interface TagRepository extends JpaRepository<TagEntity, Long> {
+import java.util.Optional;
+
+public interface TagRepository extends CrudRepository<TagEntity, Long> {
+    Optional<TagEntity> findById(Long tagId);
 }
