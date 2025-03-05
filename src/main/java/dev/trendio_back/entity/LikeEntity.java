@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -22,7 +23,7 @@ public class LikeEntity {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
     @Column(name = "create_date")
-    private Date createDate;
+    private LocalDateTime createDate;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private UserEntity user;

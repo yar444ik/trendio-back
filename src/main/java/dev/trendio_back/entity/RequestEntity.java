@@ -11,6 +11,7 @@ import lombok.Setter;
 import java.math.BigDecimal;
 import java.sql.Date;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -31,26 +32,24 @@ public class RequestEntity {
 
     private String adress;
     @Column(name = "create_date")
-    private Date createDate;
-    @Column(name = "update_date")
-    private Date updateDate;
+    private LocalDateTime createDate;
 
     private BigDecimal latitude;
     private BigDecimal longitude;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    /*@ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "tags_id")
     public List<TagEntity> tags;
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "likes_id")
-    private List<LikeEntity> likes;
+    private List<LikeEntity> likes;*/
 
     @Column(name = "header_request")
     private String headerRequest;
     @Column(name = "text_request")
     private String textRequest;
 
-    @OneToMany(mappedBy = "comment",fetch = FetchType.LAZY)
+    /*@OneToMany(mappedBy = "comment",fetch = FetchType.LAZY)
     @Column(name = "comments_id")
-    private List<CommentEntity> comments;
+    private List<CommentEntity> comments;*/
 }

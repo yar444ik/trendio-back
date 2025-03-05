@@ -6,5 +6,5 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.Optional;
 
 public interface TagRepository extends CrudRepository<TagEntity, Long> {
-    Optional<TagEntity> findById(Long tagId);
+    Optional<TagEntity> findByNameTag(String nameTag);
 }

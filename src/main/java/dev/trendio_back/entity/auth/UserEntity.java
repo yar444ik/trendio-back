@@ -34,7 +34,7 @@ public class UserEntity {
     @JoinColumn(name = "avatar_id")
     private ImageEntity avatar;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    /*@ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "tags_id")
     private List<TagEntity> tags;
     @OneToMany(fetch = FetchType.LAZY)
@@ -44,5 +44,5 @@ public class UserEntity {
     private List<CommentEntity> comments;
     @OneToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "requests_id")
-    private List<RequestEntity> requests;
+    private List<RequestEntity> requests;*/
 }

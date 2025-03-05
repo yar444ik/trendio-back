@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -29,9 +30,9 @@ public class CommentEntity {
     private RequestEntity request;
 
     @Column(name = "create_date")
-    private Date createDate;
+    private LocalDateTime createDate;
     @Column(name = "update_date")
-    private Date updateDate;
+    private LocalDateTime updateDate;
     @Column(name = "text")
     private String comment;
 }
