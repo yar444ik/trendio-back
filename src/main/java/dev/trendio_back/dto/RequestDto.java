@@ -1,6 +1,8 @@
 package dev.trendio_back.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import dev.trendio_back.entity.LikeEntity;
+import dev.trendio_back.entity.TagEntity;
 import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
@@ -8,6 +10,7 @@ import lombok.ToString;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Builder
@@ -15,7 +18,7 @@ import java.time.LocalDateTime;
 public class RequestDto {
     private Long id;
 
-    private String author;
+    private String username;
 
     private String adress;
     private LocalDateTime createDate;
@@ -23,8 +26,11 @@ public class RequestDto {
     private BigDecimal latitude;
     private BigDecimal longitude;
 
+    private List<TagDto> tags;
+    private List<LikeDto> likes;
+
     private String headerRequest;
     private String textRequest;
 
-    //private List<CommentDto> comments;
+    private List<CommentDto> comments;
 }

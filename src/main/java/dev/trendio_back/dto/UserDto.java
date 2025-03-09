@@ -1,9 +1,12 @@
 package dev.trendio_back.dto;
 
 import dev.trendio_back.entity.ImageEntity;
+import dev.trendio_back.entity.RequestEntity;
 import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
+
+import java.util.List;
 
 @Data
 @Builder
@@ -13,4 +16,11 @@ public class UserDto {
 
     private String username;
     private String role;
+
+    private String avatar;
+
+    private List<TagDto> tags;
+    private List<LikeDto> likes;
+    private List<CommentDto> comments;
+    private List<RequestDto> requests;
 }

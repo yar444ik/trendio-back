@@ -9,7 +9,6 @@ import lombok.Setter;
 
 
 import java.math.BigDecimal;
-import java.sql.Date;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -26,9 +25,10 @@ public class RequestEntity {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
 
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinTable(name = "users_id")
-    private UserEntity author;
+    @JoinColumn(name = "user_id")
+    private UserEntity username;
 
     private String adress;
     @Column(name = "create_date")
@@ -37,19 +37,19 @@ public class RequestEntity {
     private BigDecimal latitude;
     private BigDecimal longitude;
 
-    /*@ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "tags_id")
-    public List<TagEntity> tags;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "tag_id")
+    public TagEntity tag;
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "likes_id")
-    private List<LikeEntity> likes;*/
+    private List<LikeEntity> likes;
 
     @Column(name = "header_request")
     private String headerRequest;
     @Column(name = "text_request")
     private String textRequest;
 
-    /*@OneToMany(mappedBy = "comment",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "comment",fetch = FetchType.LAZY)
     @Column(name = "comments_id")
-    private List<CommentEntity> comments;*/
+    private List<CommentEntity> comments;
 }

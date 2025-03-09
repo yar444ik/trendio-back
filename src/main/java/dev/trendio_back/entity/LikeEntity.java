@@ -26,7 +26,7 @@ public class LikeEntity {
     private LocalDateTime createDate;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private UserEntity user;
+    private UserEntity username;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "requests_id")

@@ -15,14 +15,14 @@ import java.util.Optional;
 @Mapper(componentModel = "spring")
 public interface UserMapper {
 
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "username", source = "username")
-    @Mapping(target = "role", source = "role")
-    @Mapping(target = "enabled", ignore = true)
-    @Mapping(target = "passwordEntity", ignore = true)
-    @Mapping(target = "avatar", ignore = true)
-    UserEntity dtoToEntity(UserDto dto, String username, String role);
-
-    UserDto entityToDto(UserEntity entity);
+//    @Mapping(target = "id", ignore = true)
+//    @Mapping(target = "username", source = "username")
+//    @Mapping(target = "role", source = "role")
+//    @Mapping(target = "enabled", ignore = true)
+//    @Mapping(target = "passwordEntity", ignore = true)
+//    @Mapping(target = "avatar", ignore = true)
+//    UserEntity dtoToEntity(UserDto dto, String username, String role);
+//
+//    UserDto entityToDto(UserEntity entity);
 
 }
