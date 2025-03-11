@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import dev.trendio_back.entity.RequestEntity;
 
 import java.sql.Date;
 import java.time.LocalDateTime;
@@ -28,7 +29,7 @@ public class LikeEntity {
     @JoinColumn(name = "user_id")
     private UserEntity username;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "requests_id")
-    private List<RequestEntity> requests;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "request_id")
+    private RequestEntity request;
 }

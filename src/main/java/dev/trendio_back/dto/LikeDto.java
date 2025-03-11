@@ -14,5 +14,5 @@ public class LikeDto {
     private LocalDateTime createDate;
     private String username;
 
-    private List<RequestDto> requests;
+    private String request;
 }

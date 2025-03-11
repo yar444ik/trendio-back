@@ -19,7 +19,6 @@ public class UserDto {
 
     private String avatar;
 
-    private List<TagDto> tags;
     private List<LikeDto> likes;
     private List<CommentDto> comments;
     private List<RequestDto> requests;

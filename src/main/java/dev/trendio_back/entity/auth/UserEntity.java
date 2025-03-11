@@ -35,11 +35,11 @@ public class UserEntity {
     private ImageEntity avatar;
 
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "likes_id")
+    @JoinColumn(name = "likes_users")
     private List<LikeEntity> likes;
     @OneToMany(mappedBy = "username",fetch = FetchType.LAZY)
     private List<CommentEntity> comments;
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "requests_id")
+    @JoinTable(name = "requests_user")
     private List<RequestEntity> requests;
 }

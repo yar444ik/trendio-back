@@ -27,7 +27,7 @@ public class RequestEntity {
 
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "requests_user")
     private UserEntity username;
 
     private String adress;
@@ -37,11 +37,9 @@ public class RequestEntity {
     private BigDecimal latitude;
     private BigDecimal longitude;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "tag_id")
-    public TagEntity tag;
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "likes_id")
+    @OneToMany(fetch = FetchType.LAZY)
+    public List<TagEntity> tags;
+    @OneToMany(fetch = FetchType.LAZY)
     private List<LikeEntity> likes;
 
     @Column(name = "header_request")

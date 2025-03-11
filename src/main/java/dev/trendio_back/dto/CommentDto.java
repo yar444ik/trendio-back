@@ -14,4 +14,5 @@ public class CommentDto {
     private String request;
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
+    private String comment;
 }

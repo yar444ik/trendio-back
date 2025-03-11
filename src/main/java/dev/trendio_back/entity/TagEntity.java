@@ -28,6 +28,6 @@ public class TagEntity {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "image_id")
     private ImageEntity icon;
-    @OneToMany(fetch = FetchType.LAZY)
-    private List<RequestEntity> requests;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private RequestEntity request;
 }

@@ -14,7 +14,5 @@ public class TagDto {
 
     private String icon;
 
-    private List<UserDto> users;
-
-    private List<RequestDto> requests;
+    private RequestDto request;
 }

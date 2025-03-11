@@ -16,8 +16,6 @@ import java.util.List;
 @Builder
 @ToString
 public class RequestDto {
-    private Long id;
-
     private String username;
 
     private String adress;
