@@ -18,7 +18,7 @@ import java.util.List;
 public class RequestDto {
     private String username;
 
-    private String adress;
+    private String address;
     private LocalDateTime createDate;
 
     private BigDecimal latitude;

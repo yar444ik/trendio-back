@@ -11,20 +11,20 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("api/main")
 @AllArgsConstructor
 public class MainPageController {
-//    private final RequestService requestService;
-//
-//    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-//    public Page<RequestDto> getAllRequests(
-//            @RequestParam(defaultValue = "0") int page,
-//            @RequestParam(defaultValue = "5") int size,
-//            @RequestParam(defaultValue = "id") String sortField,
-//            @RequestParam(defaultValue = "asc") String sortDirection
-//    ) {
-//        return requestService.findAll(page, size, sortField, sortDirection);
-//    }
-//
-//    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-//    public RequestDto createRequest(@RequestBody RequestDto newRequest) {
-//        return requestService.create(newRequest);
-//    }
+    private final RequestService requestService;
+
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public Page<RequestDto> getAllRequests(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "id") String sortField,
+            @RequestParam(defaultValue = "asc") String sortDirection
+    ) {
+        return requestService.findAll(page, size, sortField, sortDirection);
+    }
+
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public RequestDto createRequest(@RequestBody RequestDto newRequest) {
+        return requestService.create(newRequest);
+    }
 }

@@ -26,31 +26,27 @@ import java.util.Optional;
 @Component
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class RequestService {
-//    private final RequestRepository requestRepository;
-//    private final UserRepository userRepository;
-//
-//    private final RequestMapper requestMapper;
-//    private final UserMapper userMapper;
-//
-//    public Page<RequestDto> findAll(int page, int size, String sortField, String sortDirection) {
-//        Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), sortField);
-//        Pageable pageable = PageRequest.of(page, size, sort);
-//        Page<RequestEntity> requestEntities = requestRepository.findAll(pageable);
-//        return requestEntities.map(requestMapper::entityToDto);
-//    }
-//
-//    public RequestDto create(RequestDto dto) {
-//        Optional<UserEntity> user = userRepository.findByUsername(dto.getAuthor());
-//        if (user.isEmpty()) {
-//            throw new EntityNotFoundException("User with ID " + dto.getAuthor() + " not found");
-//        }
-//
-//        UserDto userDto = userMapper.entityToDto(user.get());
-//
-//        RequestEntity entity = requestMapper.dtoToEntity(dto, LocalDateTime.now(),
-//                userDto,
-//                dto.getLatitude(), dto.getLongitude());
-//
-//        return requestMapper.entityToDto(requestRepository.save(entity));
-//    }
+    private final RequestRepository requestRepository;
+    private final UserRepository userRepository;
+
+    private final RequestMapper requestMapper;
+    private final UserMapper userMapper;
+
+    public Page<RequestDto> findAll(int page, int size, String sortField, String sortDirection) {
+        Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), sortField);
+        Pageable pageable = PageRequest.of(page, size, sort);
+        Page<RequestEntity> requestEntities = requestRepository.findAll(pageable);
+        return requestEntities.map(requestMapper::entityToDto);
+    }
+
+    public RequestDto create(RequestDto dto) {
+        Optional<UserEntity> user = userRepository.findByUsername(dto.getUsername());
+        if (user.isEmpty()) {
+            throw new EntityNotFoundException("User with ID " + dto.getUsername() + " not found");
+        }
+
+        RequestEntity entity = requestMapper.dtoToEntity(dto);
+
+        return requestMapper.entityToDto(requestRepository.save(entity));
+    }
 }

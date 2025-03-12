@@ -30,7 +30,7 @@ public class RequestEntity {
     @JoinColumn(name = "requests_user")
     private UserEntity username;
 
-    private String adress;
+    private String address;
     @Column(name = "create_date")
     private LocalDateTime createDate;
 
