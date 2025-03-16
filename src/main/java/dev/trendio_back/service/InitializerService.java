@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 public class InitializerService {
 
     private final JwtUserDetailsService userDetailsService;
+    private final RequestService requestService;
 
     public void initial() {
         userDetailsService.createUser(SignInRequest.builder()

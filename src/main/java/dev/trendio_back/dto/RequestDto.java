@@ -3,9 +3,7 @@ package dev.trendio_back.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import dev.trendio_back.entity.LikeEntity;
 import dev.trendio_back.entity.TagEntity;
-import lombok.Builder;
-import lombok.Data;
-import lombok.ToString;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.sql.Date;
@@ -15,7 +13,9 @@ import java.util.List;
 @Data
 @Builder
 @ToString
+@Getter @Setter
 public class RequestDto {
+    private Long id;
     private String username;
 
     private String address;

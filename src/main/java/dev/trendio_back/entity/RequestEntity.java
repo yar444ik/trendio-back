@@ -25,10 +25,9 @@ public class RequestEntity {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
 
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "requests_user")
-    private UserEntity username;
+    private UserEntity user;
 
     private String address;
     @Column(name = "create_date")
@@ -37,7 +36,8 @@ public class RequestEntity {
     private BigDecimal latitude;
     private BigDecimal longitude;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "request_tags")
     public List<TagEntity> tags;
     @OneToMany(fetch = FetchType.LAZY)
     private List<LikeEntity> likes;
@@ -48,6 +48,5 @@ public class RequestEntity {
     private String textRequest;
 
     @OneToMany(mappedBy = "comment",fetch = FetchType.LAZY)
-    @Column(name = "comments_id")
     private List<CommentEntity> comments;
 }

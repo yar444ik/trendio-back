@@ -5,12 +5,19 @@ import dev.trendio_back.entity.RequestEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
+import org.mapstruct.ReportingPolicy;
 
-@Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
+import java.util.List;
+
+@Mapper(componentModel = MappingConstants.ComponentModel.SPRING, uses = {TagMapper.class,LikeMapper.class,CommentMapper.class})
 public interface RequestMapper {
 
-    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "user.username", source = "username")
+    @Mapping(target = "createDate", source = "createDate")
+
     RequestEntity dtoToEntity(RequestDto dto);
 
-    RequestDto entityToDto(RequestEntity entity);
+    @Mapping(target = "user.username", source = "username")
+    @Mapping(target = "createDate", source = "createDate")
+    List<RequestEntity> entityToDtoList(List<RequestDto> dtos);
 }

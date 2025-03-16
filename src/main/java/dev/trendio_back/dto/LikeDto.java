@@ -11,8 +11,8 @@ import java.util.List;
 @Builder
 @ToString
 public class LikeDto {
+    private Long id;
     private LocalDateTime createDate;
     private String username;
-
     private String request;
 }

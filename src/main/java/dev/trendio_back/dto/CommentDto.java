@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @Builder
 @ToString
 public class CommentDto {
+    private Long id;
     private String username;
     private String request;
     private LocalDateTime createDate;

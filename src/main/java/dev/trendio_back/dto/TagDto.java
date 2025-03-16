@@ -10,9 +10,8 @@ import java.util.List;
 @Builder
 @ToString
 public class TagDto {
+    private Long id;
     private String nameTag;
-
     private String icon;
-
-    private RequestDto request;
+    private List<RequestDto> requests;
 }
