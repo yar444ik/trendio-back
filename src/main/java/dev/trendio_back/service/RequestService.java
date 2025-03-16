@@ -32,12 +32,9 @@ public class RequestService {
         Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), sortField);
         Pageable pageable = PageRequest.of(page, size, sort);
         Page<RequestEntity> requestEntities = requestRepository.findAll(pageable);
-
-        //todo mapper
-        return null;
-        /*return requestEntities.map(
+        return requestEntities.map(
                 requestMapper::entityToDto
-        );*/
+        );
     }
 
     public RequestDto create(RequestDto dto) {

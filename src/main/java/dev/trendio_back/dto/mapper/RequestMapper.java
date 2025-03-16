@@ -13,11 +13,14 @@ import java.util.List;
 public interface RequestMapper {
 
     @Mapping(target = "user.username", source = "username")
-    @Mapping(target = "createDate", source = "createDate")
-
     RequestEntity dtoToEntity(RequestDto dto);
 
     @Mapping(target = "user.username", source = "username")
-    @Mapping(target = "createDate", source = "createDate")
-    List<RequestEntity> entityToDtoList(List<RequestDto> dtos);
+    List<RequestEntity> listEntityToDto(List<RequestDto> dtos);
+
+    @Mapping(target = "username", source = "user.username")
+    RequestDto entityToDto(RequestEntity entity);
+
+    @Mapping(target = "username", source = "user.username")
+    List<RequestDto> entityToDto(List<RequestEntity> entities);
 }

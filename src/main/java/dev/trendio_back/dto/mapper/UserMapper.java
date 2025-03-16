@@ -17,7 +17,7 @@ public interface UserMapper {
     @Mapping(target = "likes", source = "likes")
     @Mapping(target = "comments", source = "comments")
     @Mapping(target = "requests", source = "requests")
-    UserEntity userDtoToEntity(UserDto user);
+    UserEntity dtoToEntity(UserDto user);
 
     @Mapping(target = "enabled", ignore = true)
     @Mapping(target = "role", source = "role")
@@ -26,5 +26,5 @@ public interface UserMapper {
     @Mapping(target = "likes", source = "likes")
     @Mapping(target = "comments", source = "comments")
     @Mapping(target = "requests", source = "requests")
-    List<UserEntity> userDtoToEntity(List<UserDto> user);
+    List<UserEntity> listDtoToEntity(List<UserDto> user);
 }

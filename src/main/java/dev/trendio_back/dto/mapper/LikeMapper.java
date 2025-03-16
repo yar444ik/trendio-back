@@ -11,12 +11,19 @@ import java.util.List;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING, uses = {TagMapper.class,UserMapper.class,RequestMapper.class})
 public interface LikeMapper {
-    //@Mapping(source = "",target = "")
-    @Mapping(source = "username",target = "username.id")
-    @Mapping(source = "request",target = "request.id")
-    LikeEntity likeDtoToEntity(LikeDto dto);
+    @Mapping(source = "username", target = "username.id")
+    @Mapping(source = "request", target = "request.id")
+    LikeEntity dtoToEntity(LikeDto dto);
 
-    @Mapping(source = "username",target = "username.id")
-    @Mapping(source = "request",target = "request.id")
-    List<LikeEntity> listLikeDtoToListEntity(List<LikeDto> dtos);
+    @Mapping(source = "username", target = "username.id")
+    @Mapping(source = "request", target = "request.id")
+    List<LikeEntity> listDtoToEntity(List<LikeDto> dtos);
+
+    @Mapping(source = "username.id", target = "username")
+    @Mapping(source = "request.id", target = "request")
+    LikeDto entityToDto(LikeEntity entity);
+
+    @Mapping(source = "username.id", target = "username")
+    @Mapping(source = "request.id", target = "request")
+    List<LikeDto> listEntityToDto(List<LikeEntity> entity);
 }

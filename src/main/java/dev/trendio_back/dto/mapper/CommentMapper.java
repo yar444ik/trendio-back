@@ -13,7 +13,17 @@ public interface CommentMapper {
 
     @Mapping(source = "username", target = "username.id")
     @Mapping(source = "request", target = "request.id")
-    CommentEntity CommentDtoToEntity(CommentDto comment);
+    CommentEntity dtoToEntity(CommentDto dto);
 
-    List<CommentEntity> CommentDtoToEntity(List<CommentDto> comment);
+    @Mapping(source = "username", target = "username.id")
+    @Mapping(source = "request", target = "request.id")
+    List<CommentEntity> listDtoToEntity(List<CommentDto> dtos);
+
+    @Mapping(source = "username.id", target = "username")
+    @Mapping(source = "request.id", target = "request")
+    CommentDto entityToDto(CommentEntity entity);
+
+    @Mapping(source = "username.id", target = "username")
+    @Mapping(source = "request.id", target = "request")
+    List<CommentDto> listEntityToDto(List<CommentEntity> entities);
 }

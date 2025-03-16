@@ -10,13 +10,19 @@ import java.util.List;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING, uses = {CommentMapper.class,LikeMapper.class})
 public interface TagMapper {
-    @Mapping(target = "id", ignore = true)
     @Mapping(source = "requests",target = "requests")
     @Mapping(source = "icon",target = "icon.imageUrl")
-    TagEntity tagDtoToEntity(TagDto dto);
+    TagEntity dtoToEntity(TagDto dto);
 
-    @Mapping(target = "id", ignore = true)
     @Mapping(source = "requests",target = "requests")
     @Mapping(source = "icon",target = "icon.imageUrl")
-    List<TagEntity> listTagDtoToListEntity(List<TagDto> dtos);
+    List<TagEntity> listDtoToEntity(List<TagDto> dtos);
+
+    @Mapping(source = "requests",target = "requests")
+    @Mapping(source = "icon.imageUrl",target = "icon")
+    TagDto entityToDto(TagEntity dto);
+
+    @Mapping(source = "requests",target = "requests")
+    @Mapping(source = "icon.imageUrl",target = "icon")
+    List<TagDto> listEntityToDto(List<TagEntity> dto);
 }
