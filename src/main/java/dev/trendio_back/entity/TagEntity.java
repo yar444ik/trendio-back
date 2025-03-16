@@ -28,7 +28,10 @@ public class TagEntity {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "image_id")
     private ImageEntity icon;
+
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "request_tags")
+    @JoinTable(name = "requests_tags",
+            joinColumns = @JoinColumn(name = "request_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private List<RequestEntity> requests;
 }

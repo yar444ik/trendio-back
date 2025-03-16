@@ -36,9 +36,9 @@ public class RequestEntity {
     private BigDecimal latitude;
     private BigDecimal longitude;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "request_tags")
+    @ManyToMany(mappedBy = "requests",fetch = FetchType.LAZY)
     public List<TagEntity> tags;
+
     @OneToMany(fetch = FetchType.LAZY)
     private List<LikeEntity> likes;
 
