@@ -25,13 +25,10 @@ public class TagEntity {
     @Column(name = "name_tag")
     private String nameTag;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade=CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "image_id")
     private ImageEntity icon;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "requests_tags",
-            joinColumns = @JoinColumn(name = "request_id"),
-            inverseJoinColumns = @JoinColumn(name = "tag_id"))
+    @ManyToMany(mappedBy = "tags", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     private List<RequestEntity> requests;
 }

@@ -5,7 +5,6 @@ import dev.trendio_back.entity.RequestEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
-import org.mapstruct.ReportingPolicy;
 
 import java.util.List;
 

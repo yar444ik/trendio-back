@@ -25,11 +25,11 @@ public class LikeEntity {
     private Long id;
     @Column(name = "create_date")
     private LocalDateTime createDate;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private UserEntity username;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
     @JoinColumn(name = "request_id")
     private RequestEntity request;
 }

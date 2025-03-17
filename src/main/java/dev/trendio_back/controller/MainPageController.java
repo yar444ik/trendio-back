@@ -25,7 +25,6 @@ public class MainPageController {
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public RequestDto createRequest(@RequestBody RequestDto newRequest) {
-        return null;
-        //return requestService.create(newRequest);
+        return requestService.create(newRequest);
     }
 }

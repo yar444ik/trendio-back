@@ -8,22 +8,22 @@ import org.mapstruct.MappingConstants;
 
 import java.util.List;
 
-@Mapper(componentModel = MappingConstants.ComponentModel.SPRING,uses = {RequestMapper.class,UserMapper.class})
+@Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface CommentMapper {
 
-    @Mapping(source = "username", target = "username.id")
-    @Mapping(source = "request", target = "request.id")
+    @Mapping(target = "user.id", source = "username_id")
+    @Mapping(source = "request_id", target = "request.id")
     CommentEntity dtoToEntity(CommentDto dto);
 
-    @Mapping(source = "username", target = "username.id")
-    @Mapping(source = "request", target = "request.id")
+    @Mapping(target = "user.id", source = "username_id")
+    @Mapping(source = "request_id", target = "request.id")
     List<CommentEntity> listDtoToEntity(List<CommentDto> dtos);
 
-    @Mapping(source = "username.id", target = "username")
-    @Mapping(source = "request.id", target = "request")
+    @Mapping(target = "username_id", source = "user.id")
+    @Mapping(source = "request.id", target = "request_id")
     CommentDto entityToDto(CommentEntity entity);
 
-    @Mapping(source = "username.id", target = "username")
-    @Mapping(source = "request.id", target = "request")
+    @Mapping(target = "username_id", source = "user.id")
+    @Mapping(source = "request.id", target = "request_id")
     List<CommentDto> listEntityToDto(List<CommentEntity> entities);
 }

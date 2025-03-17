@@ -15,7 +15,6 @@ import java.util.List;
 @ToString
 @Getter @Setter
 public class RequestDto {
-    private Long id;
     private String username;
 
     private String address;
@@ -29,6 +28,7 @@ public class RequestDto {
 
     private String headerRequest;
     private String textRequest;
+
 
     private List<CommentDto> comments;
 }

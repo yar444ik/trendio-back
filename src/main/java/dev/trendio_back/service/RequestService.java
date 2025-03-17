@@ -2,6 +2,7 @@ package dev.trendio_back.service;
 
 import dev.trendio_back.dto.RequestDto;
 import dev.trendio_back.dto.mapper.RequestMapper;
+import dev.trendio_back.dto.mapper.UserMapper;
 import dev.trendio_back.entity.RequestEntity;
 import dev.trendio_back.entity.auth.UserEntity;
 import dev.trendio_back.repository.RequestRepository;
@@ -16,6 +17,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -26,7 +28,7 @@ public class RequestService {
     private final UserRepository userRepository;
 
     private final RequestMapper requestMapper;
-    //private final UserMapper userMapper;
+    private final UserMapper userMapper;
 
     public Page<RequestDto> findAll(int page, int size, String sortField, String sortDirection) {
         Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), sortField);
@@ -43,10 +45,9 @@ public class RequestService {
             throw new EntityNotFoundException("User with ID " + dto.getUsername() + " not found");
         }
 
-        //RequestEntity entity = requestMapper.dtoToEntity(dto);
+        RequestEntity entity = requestMapper.dtoToEntity(dto);
+        entity.setCreateDate(LocalDateTime.now());
 
-
-        return null;
-        //return requestMapper.entityToDto(requestRepository.save(entity));
+        return requestMapper.entityToDto(requestRepository.save(entity));
     }
 }

@@ -9,7 +9,7 @@ import org.mapstruct.MappingConstants;
 
 import java.util.List;
 
-@Mapper(componentModel = MappingConstants.ComponentModel.SPRING, uses = {TagMapper.class,UserMapper.class,RequestMapper.class})
+@Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface LikeMapper {
     @Mapping(source = "username", target = "username.id")
     @Mapping(source = "request", target = "request.id")
