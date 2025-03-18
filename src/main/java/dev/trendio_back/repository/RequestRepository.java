@@ -10,5 +10,5 @@ import java.util.Optional;
 public interface RequestRepository extends JpaRepository<RequestEntity, Long> {
     Page<RequestEntity> findAll(Pageable pageable);
     Page<RequestEntity> findByHeaderRequest(String headerRequest, Pageable pageable);
-    Page<RequestEntity> findById(Long id, Pageable pageable);
+    Optional<RequestEntity> findById(Long id);
 }

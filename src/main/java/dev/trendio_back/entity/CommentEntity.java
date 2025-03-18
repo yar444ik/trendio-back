@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.apache.catalina.User;
 
 import java.sql.Date;
 import java.time.LocalDateTime;
@@ -17,6 +18,15 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Table(name = "comments")
 public class CommentEntity {
+
+    public CommentEntity(UserEntity user, RequestEntity request, LocalDateTime createDate, LocalDateTime updateDate, String comment) {
+        this.user=user;
+        this.request=request;
+        this.createDate=createDate;
+        this.updateDate=updateDate;
+        this.comment=comment;
+    }
+
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;

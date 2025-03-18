@@ -42,7 +42,7 @@ public class RequestEntity {
             inverseJoinColumns = @JoinColumn(name = "request_id"))
     public List<TagEntity> tags;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
     private List<LikeEntity> likes;
 
     @Column(name = "header_request")
@@ -50,6 +50,6 @@ public class RequestEntity {
     @Column(name = "text_request")
     private String textRequest;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
     private List<CommentEntity> comments;
 }

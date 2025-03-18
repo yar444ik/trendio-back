@@ -15,11 +15,11 @@ public interface RequestMapper {
     RequestEntity dtoToEntity(RequestDto dto);
 
     @Mapping(target = "user.username", source = "username")
-    List<RequestEntity> listEntityToDto(List<RequestDto> dtos);
+    List<RequestEntity> listDtoToEntity(List<RequestDto> dtos);
 
     @Mapping(target = "username", source = "user.username")
     RequestDto entityToDto(RequestEntity entity);
 
     @Mapping(target = "username", source = "user.username")
-    List<RequestDto> entityToDto(List<RequestEntity> entities);
+    List<RequestDto> listEntityToDto(List<RequestEntity> entities);
 }

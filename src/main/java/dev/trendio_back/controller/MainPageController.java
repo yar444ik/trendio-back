@@ -27,4 +27,12 @@ public class MainPageController {
     public RequestDto createRequest(@RequestBody RequestDto newRequest) {
         return requestService.create(newRequest);
     }
+
+    @DeleteMapping(value="/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Long deleteRequest(@PathVariable Long id) { return requestService.delete(id); }
+
+    @PutMapping(value="/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public RequestDto changeRequest(@RequestBody RequestDto newRequest, @PathVariable Long id) {
+        return requestService.update(newRequest, id);
+    }
 }

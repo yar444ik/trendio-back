@@ -15,6 +15,7 @@ import java.util.List;
 @ToString
 @Getter @Setter
 public class RequestDto {
+    private Long id;
     private String username;
 
     private String address;
