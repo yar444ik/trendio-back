@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("api/main")
 @AllArgsConstructor
-public class MainPageController {
+public class UserController {
     private final RequestService requestService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)

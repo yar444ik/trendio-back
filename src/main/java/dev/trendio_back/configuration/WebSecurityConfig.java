@@ -33,9 +33,11 @@ public class WebSecurityConfig {
     protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(request ->
-                        request.requestMatchers("api/login").permitAll()
+                .authorizeHttpRequests(request -> request
+                        .requestMatchers("api/login").permitAll()
                         .requestMatchers("api/register").permitAll()
+//                        .requestMatchers("/api/admin/**").hasAuthority("ADMIN")
+//                        .requestMatchers("/api/user/**").hasAuthority("USER")
                         .anyRequest().authenticated())
                 // Send a 401 error response if user is not authentic.
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(authenticationEntryPoint))
