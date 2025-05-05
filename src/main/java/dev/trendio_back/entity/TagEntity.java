@@ -29,6 +29,6 @@ public class TagEntity {
     @JoinColumn(name = "image_id")
     private ImageEntity icon;
 
-    @ManyToMany(mappedBy = "tags", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToMany(mappedBy = "tags", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
     private List<RequestEntity> requests;
 }

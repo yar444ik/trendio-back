@@ -1,17 +1,22 @@
 package dev.trendio_back.controller;
 
 import dev.trendio_back.dto.RequestDto;
+import dev.trendio_back.dto.TagDto;
 import dev.trendio_back.service.RequestService;
+import dev.trendio_back.service.TagService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("api/main")
 @AllArgsConstructor
 public class UserController {
     private final RequestService requestService;
+    private final TagService tagService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public Page<RequestDto> getAllRequests(
@@ -35,4 +40,11 @@ public class UserController {
     public RequestDto changeRequest(@RequestBody RequestDto newRequest, @PathVariable Long id) {
         return requestService.update(newRequest, id);
     }
+
+
+    @GetMapping(value = "/tags", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<TagDto> getAllTags() { return tagService.findAll(); }
+
+    @PostMapping(value = "/tags", produces = MediaType.APPLICATION_JSON_VALUE)
+    public TagDto createTag(@RequestBody TagDto newTag) { return tagService.create(newTag); }
 }
