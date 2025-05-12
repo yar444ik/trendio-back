@@ -19,7 +19,7 @@ import java.util.List;
 public class TagEntity {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "name_tag")
@@ -31,4 +31,5 @@ public class TagEntity {
 
     @ManyToMany(mappedBy = "tags", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
     private List<RequestEntity> requests;
+    //todo возвращать кол-во реквестов, оставить только айди и nameTag
 }

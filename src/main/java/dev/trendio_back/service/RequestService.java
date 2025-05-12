@@ -31,6 +31,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class RequestService {
     private final RequestRepository requestRepository;
+    private final UserRepository userRepository;
     private final TagService tagService;
     private final RequestMapper requestMapper;
 
@@ -44,7 +45,11 @@ public class RequestService {
     }
 
     public RequestDto create(RequestDto dto) {
+        UserEntity user = userRepository.findByUsername(dto.getUsername())
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "User not found with username: " + dto.getUsername()));
         RequestEntity entity = requestMapper.dtoToEntity(dto);
+        entity.setUser(user);
         entity.setCreateDate(LocalDateTime.now());
 
         return requestMapper.entityToDto(requestRepository.save(entity));
@@ -63,6 +68,7 @@ public class RequestService {
         oldDto.setTextRequest(dto.getTextRequest());
         oldDto.setComments(dto.getComments());
 
+        //todo tagservice create unique tag_name в его собственном сервисе
         if (dto.getTags() != null) {
             List<TagDto> updatedTags = dto.getTags().stream()
                     .map(tagDto -> {

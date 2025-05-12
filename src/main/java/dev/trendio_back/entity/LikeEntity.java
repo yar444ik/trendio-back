@@ -21,15 +21,16 @@ import java.util.List;
 public class LikeEntity {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
     @Column(name = "create_date")
     private LocalDateTime createDate;
-    @ManyToOne(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
-    @JoinColumn(name = "user_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
     private UserEntity username;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
-    @JoinColumn(name = "request_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "request_id", nullable = false)
     private RequestEntity request;
+    //todo прочитать про !constraint manytoone! и про связки
 }

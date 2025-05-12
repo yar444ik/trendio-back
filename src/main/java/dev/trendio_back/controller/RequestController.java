@@ -12,11 +12,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/main")
+@RequestMapping("api/requests")
 @AllArgsConstructor
-public class UserController {
+public class RequestController {
     private final RequestService requestService;
-    private final TagService tagService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public Page<RequestDto> getAllRequests(
@@ -40,11 +39,4 @@ public class UserController {
     public RequestDto changeRequest(@RequestBody RequestDto newRequest, @PathVariable Long id) {
         return requestService.update(newRequest, id);
     }
-
-
-    @GetMapping(value = "/tags", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<TagDto> getAllTags() { return tagService.findAll(); }
-
-    @PostMapping(value = "/tags", produces = MediaType.APPLICATION_JSON_VALUE)
-    public TagDto createTag(@RequestBody TagDto newTag) { return tagService.create(newTag); }
 }

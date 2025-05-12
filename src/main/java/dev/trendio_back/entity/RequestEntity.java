@@ -11,6 +11,7 @@ import lombok.Setter;
 import java.math.BigDecimal;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -22,11 +23,11 @@ import java.util.List;
 public class RequestEntity {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
-    @JoinColumn(name = "requests_user")
+    @ManyToOne(fetch = FetchType.LAZY/*, cascade=CascadeType.ALL*/)
+    @JoinColumn(name = "requests_user", nullable = false)
     private UserEntity user;
 
     private String address;
@@ -43,7 +44,7 @@ public class RequestEntity {
     public List<TagEntity> tags;
 
     @OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
-    private List<LikeEntity> likes;
+    private List<LikeEntity> likes = new ArrayList<>();
 
     @Column(name = "header_request")
     private String headerRequest;

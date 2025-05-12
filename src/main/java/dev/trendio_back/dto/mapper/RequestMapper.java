@@ -12,6 +12,7 @@ import java.util.List;
 public interface RequestMapper {
 
     @Mapping(target = "user.username", source = "username")
+    @Mapping(target = "user", ignore = true)
     RequestEntity dtoToEntity(RequestDto dto);
 
     @Mapping(target = "user.username", source = "username")

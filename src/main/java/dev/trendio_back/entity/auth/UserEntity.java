@@ -5,6 +5,7 @@ import dev.trendio_back.entity.*;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -36,7 +37,8 @@ public class UserEntity {
 
     @OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "likes_users")
-    private List<LikeEntity> likes;
+    private List<LikeEntity> likes = new ArrayList<>();
+
     @OneToMany(mappedBy = "user",fetch = FetchType.LAZY,cascade=CascadeType.ALL, orphanRemoval = true)
     private List<CommentEntity> comments;
     @OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL, orphanRemoval = true)

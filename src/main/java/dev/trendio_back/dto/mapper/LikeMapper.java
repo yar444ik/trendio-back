@@ -13,17 +13,21 @@ import java.util.List;
 public interface LikeMapper {
     @Mapping(source = "username", target = "username.id")
     @Mapping(source = "request", target = "request.id")
+    @Mapping(target = "createDate", ignore = true)
     LikeEntity dtoToEntity(LikeDto dto);
 
     @Mapping(source = "username", target = "username.id")
     @Mapping(source = "request", target = "request.id")
+    @Mapping(target = "createDate", ignore = true)
     List<LikeEntity> listDtoToEntity(List<LikeDto> dtos);
 
     @Mapping(source = "username.id", target = "username")
     @Mapping(source = "request.id", target = "request")
+    @Mapping(target = "createDate", source = "createDate")
     LikeDto entityToDto(LikeEntity entity);
 
     @Mapping(source = "username.id", target = "username")
     @Mapping(source = "request.id", target = "request")
+    @Mapping(target = "createDate", source = "createDate")
     List<LikeDto> listEntityToDto(List<LikeEntity> entity);
 }

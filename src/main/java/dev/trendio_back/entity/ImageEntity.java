@@ -14,7 +14,7 @@ import lombok.Setter;
 @Table(name = "images")
 public class ImageEntity {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
     @Column(name = "image_url")
     private String imageUrl;

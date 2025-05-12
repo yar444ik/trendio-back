@@ -1,5 +1,5 @@
 HELP.md
-questions.txt
+#questions.txt
 .gradle
 build/
 !gradle/wrapper/gradle-wrapper.jar
