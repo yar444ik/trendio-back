@@ -39,6 +39,7 @@ public class RequestService {
     private final RequestMapper requestMapper;
 
     public Page<RequestDto> findAll(int page, int size, String sortField, String sortDirection) {
+        //todo collect Pageable in controller
         Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), sortField);
         Pageable pageable = PageRequest.of(page, size, sort);
         Page<RequestEntity> requestEntities = requestRepository.findAll(pageable);
@@ -59,6 +60,8 @@ public class RequestService {
                 .collect(Collectors.toList());
 
         // Создаем и настраиваем RequestEntity
+        //todo mappers
+        //todo create entity without requesting tags, use only ids
         RequestEntity entity = new RequestEntity();
         entity.setUser(user);
         entity.setAddress(dto.getAddress());
@@ -88,6 +91,7 @@ public class RequestService {
 
         // Обновляем теги (если они есть)
         if (dto.getTags() != null) {
+            //todo requests in db is a bad idea
             List<TagEntity> updatedTags = dto.getTags().stream()
                     .map(tagDto -> {
                         if (tagDto.getId() == null) {

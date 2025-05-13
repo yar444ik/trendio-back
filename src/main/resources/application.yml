@@ -21,3 +21,6 @@ log4j:
   appender:
     FILE:
       encoding: UTF-8
+
+service:
+  name: trendioBack

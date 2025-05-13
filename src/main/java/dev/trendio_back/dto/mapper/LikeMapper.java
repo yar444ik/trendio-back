@@ -28,6 +28,7 @@ public interface LikeMapper {
 
     @Mapping(source = "username.id", target = "username")
     @Mapping(source = "request.id", target = "request")
+    //todo ?
     @Mapping(target = "createDate", source = "createDate")
     List<LikeDto> listEntityToDto(List<LikeEntity> entity);
 }

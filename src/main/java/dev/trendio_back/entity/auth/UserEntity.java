@@ -20,6 +20,7 @@ public class UserEntity {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
 
+    //todo unique here and in flyway
     private String username;
     private boolean enabled;
 
@@ -41,6 +42,7 @@ public class UserEntity {
 
     @OneToMany(mappedBy = "user",fetch = FetchType.LAZY,cascade=CascadeType.ALL, orphanRemoval = true)
     private List<CommentEntity> comments;
+
     @OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL, orphanRemoval = true)
     @JoinTable(name = "requests_user")
     private List<RequestEntity> requests;

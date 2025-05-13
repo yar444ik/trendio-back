@@ -23,6 +23,7 @@ public interface UserMapper {
     @Mapping(target = "role", source = "role")
     //@Mapping(target = "password", ignore = true)
     @Mapping(target = "avatar.imageUrl", source = "avatar")
+    //todo ?
     @Mapping(target = "likes", source = "likes")
     @Mapping(target = "comments", source = "comments")
     @Mapping(target = "requests", source = "requests")

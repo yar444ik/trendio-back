@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @ToString
 public class CommentDto {
     private Long id;
+    //todo camel case everywhere
     private Long username_id;
     private Long request_id;
     private LocalDateTime createDate;

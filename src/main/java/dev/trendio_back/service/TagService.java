@@ -23,12 +23,14 @@ public class TagService {
 
     private final TagMapper tagMapper;
 
+    //todo return 25 first tags, sort by count using, use native sql
     public List<TagDto> findAll() {
         List<TagEntity> tagEntities = tagRepository.findAll();
         return tagEntities.stream().map(tagMapper::entityToDto).collect(Collectors.toList());
     }
 
     public TagDto create(TagDto tagDto) {
+        //todo handle by constraint in advice, 400, already exist or use another http status
         Optional<TagEntity> existingTag = tagRepository.findByNameTag(tagDto.getNameTag());
         if (existingTag.isPresent()) {
             return tagMapper.entityToDto(existingTag.get());
@@ -55,6 +57,7 @@ public class TagService {
         }
 
         tagEntity.setNameTag(tagDto.getNameTag());
+        //todo update in one request to db
         return tagMapper.entityToDto(tagRepository.save(tagEntity));
     }
 }

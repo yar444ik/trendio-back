@@ -45,6 +45,8 @@ public class LikeService {
         user.getLikes().add(like);
         request.getLikes().add(like);
 
+        //todo remove 3 previous requests, solve by constraints
+        //todo handle if request doens't exist in controller advice
         likeRepository.save(like);
 
         return likeMapper.entityToDto(like);
@@ -52,6 +54,7 @@ public class LikeService {
 
     @Transactional
     public void unlikeRequest(String username, Long requestId) {
+        //todo do you need all the checks?
         UserEntity user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
@@ -61,6 +64,7 @@ public class LikeService {
         LikeEntity like = likeRepository.findByUsernameAndRequest(user, request)
                 .orElseThrow(() -> new ResourceNotFoundException("Like not found"));
 
+        //todo remove
         user.getLikes().remove(like);
         request.getLikes().remove(like);
 
@@ -70,6 +74,7 @@ public class LikeService {
     public List<LikeDto> getLikesForRequest(Long requestId) {
         RequestEntity request = requestRepository.findById(requestId)
                 .orElseThrow(() -> new ResourceNotFoundException("Request not found"));
+        //todo use jpql where requestId, JPQL, Not SQL!
         return likeMapper.listEntityToDto(likeRepository.findByRequest(request));
     }
 }

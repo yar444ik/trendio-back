@@ -21,6 +21,7 @@ public class InitializerService {
     private final TagService tagService;
     private final UserRepository userRepository;
 
+
     public void initial() {
         userDetailsService.createUser(SignInRequest.builder()
                 .username("user1")

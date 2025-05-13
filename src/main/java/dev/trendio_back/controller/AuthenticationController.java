@@ -31,12 +31,15 @@ public class AuthenticationController {
             );
         }
         catch (DisabledException e) {
+            //todo controller advice, return 403 or 401
             throw new Exception("USER_DISABLED", e);
         }
         catch (BadCredentialsException e) {
+            //todo the same
             throw new Exception("INVALID_CREDENTIALS", e);
         }
 
+        //todo request to db two times, check it and handle
         final UserDetails userDetails = userDetailsService.loadUserByUsername(request.getUsername());
         return new JwtResponse(tokenManager.generateJwtToken(userDetails));
     }
