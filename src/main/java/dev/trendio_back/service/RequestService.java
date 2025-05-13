@@ -4,8 +4,10 @@ import dev.trendio_back.dto.RequestDto;
 import dev.trendio_back.dto.TagDto;
 import dev.trendio_back.dto.mapper.RequestMapper;
 import dev.trendio_back.dto.mapper.RequestMapperImpl;
+import dev.trendio_back.dto.mapper.TagMapper;
 import dev.trendio_back.dto.mapper.UserMapper;
 import dev.trendio_back.entity.RequestEntity;
+import dev.trendio_back.entity.TagEntity;
 import dev.trendio_back.entity.auth.UserEntity;
 import dev.trendio_back.repository.RequestRepository;
 import dev.trendio_back.repository.TagRepository;
@@ -33,6 +35,7 @@ public class RequestService {
     private final RequestRepository requestRepository;
     private final UserRepository userRepository;
     private final TagService tagService;
+    private final TagMapper tagMapper;
     private final RequestMapper requestMapper;
 
     public Page<RequestDto> findAll(int page, int size, String sortField, String sortDirection) {
@@ -68,18 +71,9 @@ public class RequestService {
         oldDto.setTextRequest(dto.getTextRequest());
         oldDto.setComments(dto.getComments());
 
-        //todo tagservice create unique tag_name в его собственном сервисе
         if (dto.getTags() != null) {
             List<TagDto> updatedTags = dto.getTags().stream()
-                    .map(tagDto -> {
-                        // Если у тега есть ID, используем его
-                        if (tagDto.getId() != null) {
-                            return tagDto;
-                        }
-                        // Иначе ищем существующий тег по имени
-                        return tagService.findByName(tagDto.getNameTag())
-                                .orElseGet(() -> tagService.create(tagDto));
-                    })
+                    .map(tagService::update)
                     .collect(Collectors.toList());
             oldDto.setTags(updatedTags);
         }

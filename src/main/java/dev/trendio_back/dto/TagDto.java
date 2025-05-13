@@ -12,6 +12,6 @@ import java.util.List;
 public class TagDto {
     private Long id;
     private String nameTag;
-    private String icon;
-    private List<RequestDto> requests;
+//    private String icon;
+//    private List<RequestDto> requests;
 }

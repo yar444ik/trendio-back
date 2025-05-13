@@ -22,14 +22,14 @@ public class TagEntity {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name_tag")
+    @Column(name = "name_tag", unique = true, nullable = false)
     private String nameTag;
-
+/* убираю это поле по причине ненадобности
     @OneToOne(fetch = FetchType.LAZY, cascade=CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "image_id")
-    private ImageEntity icon;
+    private ImageEntity icon; */
 
+/* убираю это поле по причине ненадобности
     @ManyToMany(mappedBy = "tags", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
-    private List<RequestEntity> requests;
-    //todo возвращать кол-во реквестов, оставить только айди и nameTag
+    private List<RequestEntity> requests;*/
 }
