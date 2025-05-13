@@ -36,6 +36,9 @@ dependencies {
 	implementation group: 'org.mapstruct', name: 'mapstruct', version: '1.6.2'
 	implementation group: 'org.mapstruct', name: 'mapstruct-processor', version: '1.6.2'
 
+	implementation group: 'org.postgresql', name: 'postgresql', version: '42.7.3'
+	implementation group: 'org.flywaydb', name: 'flyway-core', version: '9.22.3'
+
 	runtimeOnly('org.postgresql:postgresql')
 
 	compileOnly 'org.projectlombok:lombok'
