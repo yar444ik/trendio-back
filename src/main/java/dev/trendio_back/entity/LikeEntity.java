@@ -17,7 +17,9 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "likes")
+@Table(name = "likes", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"user_id", "request_id"})
+})
 public class LikeEntity {
 
     @Id
@@ -32,5 +34,4 @@ public class LikeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "request_id", nullable = false)
     private RequestEntity request;
-    //todo прочитать про !constraint manytoone! и про связки
 }

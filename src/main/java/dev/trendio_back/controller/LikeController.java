@@ -31,7 +31,8 @@ public class LikeController {
         likeService.unlikeRequest(authUser.getUsername(), requestId);
     }
 
-    @GetMapping("/request/{requestId}")
+    //todo
+    @GetMapping("/get/{requestId}")
     public List<LikeDto> getLikesForRequest(@PathVariable Long requestId) {
         return likeService.getLikesForRequest(requestId);
     }

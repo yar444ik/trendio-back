@@ -43,7 +43,7 @@ public class RequestEntity {
             inverseJoinColumns = @JoinColumn(name = "request_id"))
     public List<TagEntity> tags;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL, orphanRemoval = true)
     private List<LikeEntity> likes = new ArrayList<>();
 
     @Column(name = "header_request")

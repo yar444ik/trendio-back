@@ -14,9 +14,9 @@ import java.util.List;
 public class TagController {
     private final TagService tagService;
 
-    @GetMapping(value = "/tags", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<TagDto> getAllTags() { return tagService.findAll(); }
 
-    @PostMapping(value = "/tags", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public TagDto createTag(@RequestBody TagDto newTag) { return tagService.create(newTag); }
 }

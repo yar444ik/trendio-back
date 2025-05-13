@@ -1,5 +1,6 @@
 package dev.trendio_back.controller;
 
+import dev.trendio_back.dto.LikeDto;
 import dev.trendio_back.dto.RequestDto;
 import dev.trendio_back.dto.TagDto;
 import dev.trendio_back.service.RequestService;

@@ -2,3 +2,170 @@
 2. делать ли мне отдельный контроллер для лайков или совместить?
 
 после фикса лайков и тегов надо сделать кастомный контроллер исключений
+
+package dev.trendio_back.service;
+
+import dev.trendio_back.dto.LikeDto;
+import dev.trendio_back.dto.mapper.LikeMapper;
+import dev.trendio_back.entity.LikeEntity;
+import dev.trendio_back.entity.RequestEntity;
+import dev.trendio_back.entity.auth.UserEntity;
+import dev.trendio_back.repository.LikeRepository;
+import dev.trendio_back.repository.RequestRepository;
+import dev.trendio_back.repository.UserRepository;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+
+@Service
+@RequiredArgsConstructor
+public class LikeService {
+    private final LikeRepository likeRepository;
+    private final UserRepository userRepository;
+    private final RequestRepository requestRepository;
+    private final LikeMapper likeMapper;
+
+    public LikeDto likeRequest(String username, Long requestId) {
+        UserEntity user = userRepository.findById(userRepository.findByUsername(username)
+                        .orElseThrow(() -> new ResourceNotFoundException("User not found"))
+                        .getId())
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        RequestEntity request = requestRepository.findById(requestId)
+                .orElseThrow(() -> new ResourceNotFoundException("Request not found"));
+
+        // Проверяем, не поставил ли пользователь уже лайк
+        Optional<LikeEntity> existingLike = likeRepository.findByUsernameAndRequest(user, request);
+        if (existingLike.isPresent()) {
+            throw new IllegalStateException("User already liked this request");
+        }
+
+        LikeEntity like = new LikeEntity();
+        like.setUsername(user);
+        like.setRequest(request);
+        like.setCreateDate(LocalDateTime.now());
+
+        request.getLikes().add(like);
+        user.getLikes().add(like);
+
+        LikeEntity savedLike = likeRepository.save(like);
+        requestRepository.save(request);
+        userRepository.save(user);
+
+
+        return likeMapper.entityToDto(savedLike);
+    }
+
+    @Transactional
+    public void unlikeRequest(String username, Long requestId) {
+        // Получаем managed сущности
+        UserEntity user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+        RequestEntity request = requestRepository.findById(requestId)
+                .orElseThrow(() -> new ResourceNotFoundException("Request not found"));
+
+        // Находим лайк
+        LikeEntity like = likeRepository.findByUsernameAndRequest(user, request)
+                .orElseThrow(() -> new ResourceNotFoundException("Like not found"));
+
+        // Удаляем связи
+        user.getLikes().remove(like);
+        request.getLikes().remove(like);
+
+        // Сохраняем изменения
+        likeRepository.delete(like);
+        userRepository.saveAndFlush(user);
+        requestRepository.saveAndFlush(request);
+    }
+
+    public List<LikeDto> getLikesForRequest(Long requestId) {
+        RequestEntity request = requestRepository.findById(requestId)
+                .orElseThrow(() -> new ResourceNotFoundException("Request not found"));
+        return likeMapper.listEntityToDto(likeRepository.findByRequest(request));
+    }
+}
+
+package dev.trendio_back.controller;
+
+import dev.trendio_back.dto.LikeDto;
+import dev.trendio_back.dto.auth.AuthUser;
+import dev.trendio_back.repository.RequestRepository;
+import dev.trendio_back.repository.UserRepository;
+import dev.trendio_back.service.LikeService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/likes")
+@RequiredArgsConstructor
+public class LikeController {
+    private final LikeService likeService;
+
+    @PostMapping("/{requestId}")
+    public LikeDto likeRequest(@AuthenticationPrincipal AuthUser authUser,
+                               @PathVariable Long requestId) {
+        return likeService.likeRequest(authUser.getUsername(), requestId);
+    }
+
+    @DeleteMapping("/{requestId}")
+    public void unlikeRequest(
+            @AuthenticationPrincipal AuthUser authUser,
+            @PathVariable Long requestId) {
+        likeService.unlikeRequest(authUser.getUsername(), requestId);
+    }
+
+    @GetMapping("/request/{requestId}")
+    public List<LikeDto> getLikesForRequest(@PathVariable Long requestId) {
+        return likeService.getLikesForRequest(requestId);
+    }
+}
+
+package dev.trendio_back.entity;
+
+import dev.trendio_back.entity.auth.UserEntity;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import dev.trendio_back.entity.RequestEntity;
+
+import java.sql.Date;
+import java.time.LocalDateTime;
+import java.util.List;
+
+@Entity
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "likes")
+public class LikeEntity {
+
+    @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    private Long id;
+    @Column(name = "create_date")
+    private LocalDateTime createDate;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", unique = true, nullable = false)
+    private UserEntity username;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "request_id", nullable = false)
+    private RequestEntity request;
+
+}
+
+
+кажись я понял, что нужно исправить: https://stackoverflow.com/questions/15372654/uniqueconstraint-and-columnunique-true-in-hibernate-annotation
+скорее всего когда происходит unlike, возникает похожая ошибка, во время 76-78 строчки кода в LikeService. Исправь это с учетом уникального лайка

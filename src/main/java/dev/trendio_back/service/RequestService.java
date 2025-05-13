@@ -48,39 +48,65 @@ public class RequestService {
     }
 
     public RequestDto create(RequestDto dto) {
+        // Получаем пользователя
         UserEntity user = userRepository.findByUsername(dto.getUsername())
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "User not found with username: " + dto.getUsername()));
-        RequestEntity entity = requestMapper.dtoToEntity(dto);
-        entity.setUser(user);
-        entity.setCreateDate(LocalDateTime.now());
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
-        return requestMapper.entityToDto(requestRepository.save(entity));
+        // Сохраняем или получаем существующие теги
+        List<TagEntity> tagEntities = dto.getTags().stream()
+                .map(tagDto -> tagService.create(tagDto)) // Используем create для гарантии сохранения
+                .map(tagMapper::dtoToEntity)
+                .collect(Collectors.toList());
+
+        // Создаем и настраиваем RequestEntity
+        RequestEntity entity = new RequestEntity();
+        entity.setUser(user);
+        entity.setAddress(dto.getAddress());
+        entity.setCreateDate(LocalDateTime.now());
+        entity.setLatitude(dto.getLatitude());
+        entity.setLongitude(dto.getLongitude());
+        entity.setHeaderRequest(dto.getHeaderRequest());
+        entity.setTextRequest(dto.getTextRequest());
+        entity.setTags(tagEntities); // Устанавливаем теги
+
+        // Сохраняем RequestEntity
+        RequestEntity savedEntity = requestRepository.save(entity);
+        return requestMapper.entityToDto(savedEntity);
     }
 
     public RequestDto update(RequestDto dto, Long id) {
-        RequestDto oldDto = requestMapper.entityToDto(requestRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Not Found")));
+        // Получаем существующую сущность
+        RequestEntity existingEntity = requestRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Request not found"));
 
-        oldDto.setUsername(dto.getUsername());
-        oldDto.setAddress(dto.getAddress());
-        oldDto.setLatitude(dto.getLatitude());
-        oldDto.setLongitude(dto.getLongitude());
-        oldDto.setLikes(dto.getLikes());
-        oldDto.setHeaderRequest(dto.getHeaderRequest());
-        oldDto.setTextRequest(dto.getTextRequest());
-        oldDto.setComments(dto.getComments());
+        // Обновляем поля
+        existingEntity.setAddress(dto.getAddress());
+        existingEntity.setLatitude(dto.getLatitude());
+        existingEntity.setLongitude(dto.getLongitude());
+        existingEntity.setHeaderRequest(dto.getHeaderRequest());
+        existingEntity.setTextRequest(dto.getTextRequest());
 
+        // Обновляем теги (если они есть)
         if (dto.getTags() != null) {
-            List<TagDto> updatedTags = dto.getTags().stream()
-                    .map(tagService::update)
+            List<TagEntity> updatedTags = dto.getTags().stream()
+                    .map(tagDto -> {
+                        if (tagDto.getId() == null) {
+                            // Создаем новый тег, если id отсутствует
+                            return tagService.create(tagDto);
+                        } else {
+                            // Обновляем существующий тег, если id указан
+                            return tagService.update(tagDto);
+                        }
+                    })
+                    .map(tagMapper::dtoToEntity)
                     .collect(Collectors.toList());
-            oldDto.setTags(updatedTags);
+
+            existingEntity.setTags(updatedTags);
         }
 
-        requestRepository.save(requestMapper.dtoToEntity(oldDto));
-
-        return oldDto;
+        // Сохраняем обновленную сущность
+        RequestEntity updatedEntity = requestRepository.save(existingEntity);
+        return requestMapper.entityToDto(updatedEntity);
     }
 
     public Long delete(Long id) {

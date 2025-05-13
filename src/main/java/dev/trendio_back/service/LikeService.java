@@ -25,17 +25,15 @@ public class LikeService {
     private final RequestRepository requestRepository;
     private final LikeMapper likeMapper;
 
+    @Transactional
     public LikeDto likeRequest(String username, Long requestId) {
-        UserEntity user = userRepository.findById(userRepository.findByUsername(username)
-                        .orElseThrow(() -> new ResourceNotFoundException("User not found"))
-                        .getId())
+        UserEntity user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
         RequestEntity request = requestRepository.findById(requestId)
                 .orElseThrow(() -> new ResourceNotFoundException("Request not found"));
 
-        // Проверяем, не поставил ли пользователь уже лайк
-        Optional<LikeEntity> existingLike = likeRepository.findByUsernameAndRequest(user, request);
-        if (existingLike.isPresent()) {
+        if (likeRepository.findByUsernameAndRequest(user, request).isPresent()) {
             throw new IllegalStateException("User already liked this request");
         }
 
@@ -44,38 +42,29 @@ public class LikeService {
         like.setRequest(request);
         like.setCreateDate(LocalDateTime.now());
 
-        request.getLikes().add(like);
         user.getLikes().add(like);
+        request.getLikes().add(like);
 
-        LikeEntity savedLike = likeRepository.save(like);
-        requestRepository.save(request);
-        userRepository.save(user);
+        likeRepository.save(like);
 
-
-        return likeMapper.entityToDto(savedLike);
+        return likeMapper.entityToDto(like);
     }
 
     @Transactional
     public void unlikeRequest(String username, Long requestId) {
-        // Получаем managed сущности
         UserEntity user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         RequestEntity request = requestRepository.findById(requestId)
                 .orElseThrow(() -> new ResourceNotFoundException("Request not found"));
 
-        // Находим лайк
         LikeEntity like = likeRepository.findByUsernameAndRequest(user, request)
                 .orElseThrow(() -> new ResourceNotFoundException("Like not found"));
 
-        // Удаляем связи
         user.getLikes().remove(like);
         request.getLikes().remove(like);
 
-        // Сохраняем изменения
         likeRepository.delete(like);
-        userRepository.saveAndFlush(user);
-        requestRepository.saveAndFlush(request);
     }
 
     public List<LikeDto> getLikesForRequest(Long requestId) {

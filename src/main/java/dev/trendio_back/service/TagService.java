@@ -39,6 +39,11 @@ public class TagService {
     }
 
     public TagDto update(TagDto tagDto) {
+        if (tagDto.getId() == null) {
+            // Если id отсутствует, создаем новый тег
+            return create(tagDto);
+        }
+
         TagEntity tagEntity = tagRepository.findById(tagDto.getId())
                 .orElseThrow(() -> new EntityNotFoundException("Tag not found with id: " + tagDto.getId()));
 
