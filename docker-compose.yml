@@ -1,4 +1,4 @@
-version: '3.7'
+
 
 services:
 #  app:
@@ -15,16 +15,16 @@ services:
 #      - minio
 #    ports:
 #      - "8080:8080"
-#
-#  db:
-#    image: postgres
-#    container_name: trendioDB
-#    environment:
-#      POSTGRES_DB: trendio
-#      POSTGRES_USER: postgres
-#      POSTGRES_PASSWORD: postgres
-#    ports:
-#      - "5430:5430"
+
+  db:
+    image: postgres
+    container_name: trendioDB
+    environment:
+      POSTGRES_DB: trendio
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
 
   minio:
     image: minio/minio:latest

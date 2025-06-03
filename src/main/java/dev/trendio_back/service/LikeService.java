@@ -21,60 +21,27 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class LikeService {
     private final LikeRepository likeRepository;
-    private final UserRepository userRepository;
-    private final RequestRepository requestRepository;
     private final LikeMapper likeMapper;
 
-    @Transactional
-    public LikeDto likeRequest(String username, Long requestId) {
-        UserEntity user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
-
-        RequestEntity request = requestRepository.findById(requestId)
-                .orElseThrow(() -> new ResourceNotFoundException("Request not found"));
-
-        if (likeRepository.findByUsernameAndRequest(user, request).isPresent()) {
-            throw new IllegalStateException("User already liked this request");
-        }
-
+    public LikeDto likeRequest(Long userId, Long requestId) {
         LikeEntity like = new LikeEntity();
-        like.setUsername(user);
-        like.setRequest(request);
+
+        like.setUser(UserEntity.of(userId));
+        like.setRequest(RequestEntity.of(requestId));
         like.setCreateDate(LocalDateTime.now());
 
-        user.getLikes().add(like);
-        request.getLikes().add(like);
-
-        //todo remove 3 previous requests, solve by constraints
-        //todo handle if request doens't exist in controller advice
         likeRepository.save(like);
 
         return likeMapper.entityToDto(like);
     }
 
-    @Transactional
-    public void unlikeRequest(String username, Long requestId) {
-        //todo do you need all the checks?
-        UserEntity user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
-
-        RequestEntity request = requestRepository.findById(requestId)
-                .orElseThrow(() -> new ResourceNotFoundException("Request not found"));
-
-        LikeEntity like = likeRepository.findByUsernameAndRequest(user, request)
-                .orElseThrow(() -> new ResourceNotFoundException("Like not found"));
-
-        //todo remove
-        user.getLikes().remove(like);
-        request.getLikes().remove(like);
-
+    public void unlikeRequest(Long userId, Long requestId) {
+        //todo и находила и удаляла native request
+        LikeEntity like = likeRepository.findByUserIdAndRequestId(userId, requestId);
         likeRepository.delete(like);
     }
 
     public List<LikeDto> getLikesForRequest(Long requestId) {
-        RequestEntity request = requestRepository.findById(requestId)
-                .orElseThrow(() -> new ResourceNotFoundException("Request not found"));
-        //todo use jpql where requestId, JPQL, Not SQL!
-        return likeMapper.listEntityToDto(likeRepository.findByRequest(request));
+        return likeMapper.listEntityToDto(likeRepository.findLikesByRequestId(requestId));
     }
 }

@@ -13,6 +13,7 @@ import dev.trendio_back.repository.RequestRepository;
 import dev.trendio_back.repository.TagRepository;
 import dev.trendio_back.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -24,6 +25,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -37,84 +39,49 @@ public class RequestService {
     private final TagService tagService;
     private final TagMapper tagMapper;
     private final RequestMapper requestMapper;
+    private final TagRepository tagRepository;
 
     public Page<RequestDto> findAll(int page, int size, String sortField, String sortDirection) {
-        //todo collect Pageable in controller
+        //todo(?) collect Pageable in controller
+        //todo отсюда
         Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), sortField);
-        Pageable pageable = PageRequest.of(page, size, sort);
+        Pageable pageable = PageRequest.of(page, size, sort); //todo в контроллере
         Page<RequestEntity> requestEntities = requestRepository.findAll(pageable);
-        return requestEntities.map(
-                requestMapper::entityToDto
-        );
+        return requestEntities.map(requestMapper::entityToDto);
     }
 
     public RequestDto create(RequestDto dto) {
-        // Получаем пользователя
-        UserEntity user = userRepository.findByUsername(dto.getUsername())
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
-
-        // Сохраняем или получаем существующие теги
-        List<TagEntity> tagEntities = dto.getTags().stream()
-                .map(tagDto -> tagService.create(tagDto)) // Используем create для гарантии сохранения
-                .map(tagMapper::dtoToEntity)
-                .collect(Collectors.toList());
-
-        // Создаем и настраиваем RequestEntity
-        //todo mappers
-        //todo create entity without requesting tags, use only ids
-        RequestEntity entity = new RequestEntity();
-        entity.setUser(user);
-        entity.setAddress(dto.getAddress());
-        entity.setCreateDate(LocalDateTime.now());
-        entity.setLatitude(dto.getLatitude());
-        entity.setLongitude(dto.getLongitude());
-        entity.setHeaderRequest(dto.getHeaderRequest());
-        entity.setTextRequest(dto.getTextRequest());
-        entity.setTags(tagEntities); // Устанавливаем теги
-
-        // Сохраняем RequestEntity
-        RequestEntity savedEntity = requestRepository.save(entity);
-        return requestMapper.entityToDto(savedEntity);
-    }
-
-    public RequestDto update(RequestDto dto, Long id) {
-        // Получаем существующую сущность
-        RequestEntity existingEntity = requestRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Request not found"));
-
-        // Обновляем поля
-        existingEntity.setAddress(dto.getAddress());
-        existingEntity.setLatitude(dto.getLatitude());
-        existingEntity.setLongitude(dto.getLongitude());
-        existingEntity.setHeaderRequest(dto.getHeaderRequest());
-        existingEntity.setTextRequest(dto.getTextRequest());
-
-        // Обновляем теги (если они есть)
-        if (dto.getTags() != null) {
-            //todo requests in db is a bad idea
-            List<TagEntity> updatedTags = dto.getTags().stream()
-                    .map(tagDto -> {
-                        if (tagDto.getId() == null) {
-                            // Создаем новый тег, если id отсутствует
-                            return tagService.create(tagDto);
-                        } else {
-                            // Обновляем существующий тег, если id указан
-                            return tagService.update(tagDto);
-                        }
-                    })
-                    .map(tagMapper::dtoToEntity)
-                    .collect(Collectors.toList());
-
-            existingEntity.setTags(updatedTags);
-        }
-
-        // Сохраняем обновленную сущность
-        RequestEntity updatedEntity = requestRepository.save(existingEntity);
-        return requestMapper.entityToDto(updatedEntity);
+        RequestEntity requestEntity = requestMapper.dtoToEntity(dto);
+        requestEntity = requestRepository.save(requestEntity);
+        return requestMapper.entityToDto(requestEntity);
     }
 
     public Long delete(Long id) {
         requestRepository.deleteById(id);
         return id;
+    }
+
+    public RequestDto update(RequestDto request, Long id) {
+        RequestEntity requestEntity = requestRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Request not found"));
+        return requestMapper.entityToDto(requestRepository.save(dtoToEntity(request, requestEntity)));
+    }
+
+    RequestEntity dtoToEntity(RequestDto dto, RequestEntity entity) {
+        entity.setAddress(dto.getAddress());
+        entity.setLatitude(dto.getLatitude());
+        entity.setLongitude(dto.getLongitude());
+        entity.setHeaderRequest(dto.getHeaderRequest());
+        entity.setTextRequest(dto.getTextRequest());
+        //todo clear and update(save all) (как делать в hibernate merge)
+        List<TagDto> tagsDto = dto.getTags();
+        List<TagEntity> tagEntities = tagMapper.listDtoToEntity(tagsDto);
+        tagRepository.findByNameTagIn(dto.getTags().stream().filter()...);
+//        List<TagEntity> newTags = dto.getTags().stream()
+//                .map(tagMapper::dtoToEntity)
+//                .collect(Collectors.toList());
+//        tagService.saveAll(newTags);
+        entity.setTags(newTags);
+        return entity;
     }
 }

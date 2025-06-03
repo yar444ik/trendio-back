@@ -6,6 +6,7 @@ import dev.trendio_back.dto.auth.SignInRequest;
 import dev.trendio_back.entity.auth.PasswordEntity;
 import dev.trendio_back.entity.auth.UserEntity;
 import dev.trendio_back.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -35,6 +36,7 @@ public class JwtUserDetailsService implements UserDetailsService {
                 .build();
     }
 
+    @Transactional
     public void createUser(SignInRequest request) {
         if (!userRepository.findByUsername(request.getUsername()).isPresent()) {
             UserEntity entity = UserEntity.builder()

@@ -8,16 +8,16 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class TrendioBackApplication {
 
-//	private static InitializerService initializerService;
+	private static InitializerService initializerService;
 
-//	@Autowired
-//	public void setInitialLoader(InitializerService initializerService) {
-//		TrendioBackApplication.initializerService = initializerService;
-//	}
+	@Autowired
+	public void setInitialLoader(InitializerService initializerService) {
+		TrendioBackApplication.initializerService = initializerService;
+	}
 
 	public static void main(String[] args) {
 		SpringApplication.run(TrendioBackApplication.class, args);
-//		initializerService.initial();
+		initializerService.initial();
 	}
 
 }

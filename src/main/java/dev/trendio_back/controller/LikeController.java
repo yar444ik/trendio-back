@@ -2,6 +2,7 @@ package dev.trendio_back.controller;
 
 import dev.trendio_back.dto.LikeDto;
 import dev.trendio_back.dto.auth.AuthUser;
+import dev.trendio_back.entity.auth.UserEntity;
 import dev.trendio_back.repository.RequestRepository;
 import dev.trendio_back.repository.UserRepository;
 import dev.trendio_back.service.LikeService;
@@ -19,16 +20,16 @@ public class LikeController {
     private final LikeService likeService;
 
     @PostMapping("/{requestId}")
-    public LikeDto likeRequest(@AuthenticationPrincipal AuthUser authUser,
+    public LikeDto likeRequest(@RequestBody Long userId,
                                @PathVariable Long requestId) {
-        return likeService.likeRequest(authUser.getUsername(), requestId);
+        return likeService.likeRequest(userId, requestId);
     }
 
     @DeleteMapping("/{requestId}")
     public void unlikeRequest(
-            @AuthenticationPrincipal AuthUser authUser,
+            @RequestBody Long userId,
             @PathVariable Long requestId) {
-        likeService.unlikeRequest(authUser.getUsername(), requestId);
+        likeService.unlikeRequest(userId, requestId);
     }
 
     @GetMapping("/request/{requestId}")

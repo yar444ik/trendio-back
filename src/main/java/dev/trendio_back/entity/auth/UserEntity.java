@@ -20,7 +20,7 @@ public class UserEntity {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
 
-    //todo unique here and in flyway
+    //todo(возникает ошибка) unique here and in flyway
     private String username;
     private boolean enabled;
 
@@ -36,14 +36,18 @@ public class UserEntity {
     @JoinColumn(name = "avatar_id")
     private ImageEntity avatar;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "likes_users")
-    private List<LikeEntity> likes = new ArrayList<>();
+    @OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL, orphanRemoval = true, mappedBy = "user")
+    private List<LikeEntity> likes;
 
     @OneToMany(mappedBy = "user",fetch = FetchType.LAZY,cascade=CascadeType.ALL, orphanRemoval = true)
     private List<CommentEntity> comments;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL, orphanRemoval = true)
-    @JoinTable(name = "requests_user")
+    @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true, mappedBy = "user")
     private List<RequestEntity> requests;
+
+    public static UserEntity of(Long id) {
+        UserEntity user = new UserEntity();
+        user.setId(id);
+        return user;
+    }
 }

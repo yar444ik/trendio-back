@@ -19,14 +19,6 @@ import java.time.LocalDateTime;
 @Table(name = "comments")
 public class CommentEntity {
 
-    public CommentEntity(UserEntity user, RequestEntity request, LocalDateTime createDate, LocalDateTime updateDate, String comment) {
-        this.user=user;
-        this.request=request;
-        this.createDate=createDate;
-        this.updateDate=updateDate;
-        this.comment=comment;
-    }
-
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;

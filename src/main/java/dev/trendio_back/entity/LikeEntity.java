@@ -28,10 +28,9 @@ public class LikeEntity {
     @Column(name = "create_date")
     private LocalDateTime createDate;
 
-    //todo rename to user
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    private UserEntity username;
+    private UserEntity user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "request_id", nullable = false)

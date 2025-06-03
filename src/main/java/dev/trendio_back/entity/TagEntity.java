@@ -24,12 +24,4 @@ public class TagEntity {
 
     @Column(name = "name_tag", unique = true, nullable = false)
     private String nameTag;
-/* убираю это поле по причине ненадобности
-    @OneToOne(fetch = FetchType.LAZY, cascade=CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "image_id")
-    private ImageEntity icon; */
-
-/* убираю это поле по причине ненадобности
-    @ManyToMany(mappedBy = "tags", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
-    private List<RequestEntity> requests;*/
 }

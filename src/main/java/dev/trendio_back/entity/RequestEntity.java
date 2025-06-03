@@ -26,8 +26,8 @@ public class RequestEntity {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY/*, cascade=CascadeType.ALL*/)
-    @JoinColumn(name = "requests_user", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY,  cascade=CascadeType.ALL)
+    @JoinColumn(name = "user_id", nullable = false,unique = true)
     private UserEntity user;
 
     private String address;
@@ -37,20 +37,26 @@ public class RequestEntity {
     private BigDecimal latitude;
     private BigDecimal longitude;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY) //todo(??) может сделать каскад хз
     @JoinTable(name = "requests_tags",
-            joinColumns = @JoinColumn(name = "tag_id"),
-            inverseJoinColumns = @JoinColumn(name = "request_id"))
+            joinColumns = @JoinColumn(name = "tag_id", nullable = false),
+            inverseJoinColumns = @JoinColumn(name = "request_id", nullable = false))
     public List<TagEntity> tags;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL, orphanRemoval = true)
-    private List<LikeEntity> likes = new ArrayList<>();
+    @OneToMany(mappedBy = "request",fetch = FetchType.LAZY, cascade=CascadeType.ALL, orphanRemoval = true)
+    private List<LikeEntity> likes;
 
     @Column(name = "header_request")
     private String headerRequest;
     @Column(name = "text_request")
     private String textRequest;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
+    @OneToMany(mappedBy = "request",fetch = FetchType.LAZY, cascade=CascadeType.ALL)
     private List<CommentEntity> comments;
+
+    public static RequestEntity of(Long id) {
+        RequestEntity request = new RequestEntity();
+        request.setId(id);
+        return request;
+    }
 }
