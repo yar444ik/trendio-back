@@ -21,9 +21,9 @@ public class TagService {
 
     private final TagMapper tagMapper;
 
-    //todo return 25 first tags, sort by count using, use native sql
-    //public List<TagDto> findTop25() {}
-
+    public List<TagDto> getTop25TagsByCount() {
+        return tagRepository.findTop25TagsByCount().stream().map(tagMapper::entityToDto).toList();
+    }
 
     public List<TagDto> findAll() {
         List<TagEntity> tagEntities = tagRepository.findAll();
@@ -35,9 +35,5 @@ public class TagService {
         return tagMapper.entityToDto(
                 tagRepository.save(tagMapper.dtoToEntity(tagDto))
         );
-    }
-
-    public void saveAll(List<TagEntity> entities) {
-        tagRepository.saveAll(entities);
     }
 }

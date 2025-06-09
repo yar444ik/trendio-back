@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -24,4 +25,17 @@ public class TagEntity {
 
     @Column(name = "name_tag", unique = true, nullable = false)
     private String nameTag;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof TagEntity that)) return false;
+        return Objects.equals(getNameTag(), that.getNameTag());
+    }
+
+    // Метод hashCode
+    @Override
+    public int hashCode() {
+        return 31 * getNameTag().hashCode();
+    }
 }

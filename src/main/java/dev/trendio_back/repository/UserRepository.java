@@ -12,5 +12,4 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     @Query("SELECT u FROM UserEntity u JOIN FETCH u.passwordEntity WHERE u.username = :name")
     Optional<UserEntity> findByUsername(String name);
 
-    boolean existsByUsername(String username);
 }

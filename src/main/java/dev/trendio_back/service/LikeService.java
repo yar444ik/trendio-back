@@ -36,7 +36,6 @@ public class LikeService {
     }
 
     public void unlikeRequest(Long userId, Long requestId) {
-        //todo и находила и удаляла native request
         LikeEntity like = likeRepository.findByUserIdAndRequestId(userId, requestId);
         likeRepository.delete(like);
     }

@@ -34,8 +34,7 @@ public class InitializerService {
 
         List<TagDto> tags = List.of(tag1);
 
-        UserEntity user = userRepository.findByUsername("user1")
-                .orElseThrow(() -> new IllegalStateException("User not found"));
+        UserEntity user = userRepository.findByUsername("user1").orElseThrow();
 
         requestService.create(RequestDto.builder()
                 .username(user.getUsername())

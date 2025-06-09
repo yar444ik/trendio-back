@@ -17,6 +17,11 @@ public class TagController {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<TagDto> getAllTags() { return tagService.findAll(); }
 
+    @GetMapping("/top25")
+    public List<TagDto> getTop25TagsByCount() {
+        return tagService.getTop25TagsByCount();
+    }
+
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public TagDto createTag(@RequestBody TagDto newTag) { return tagService.create(newTag); }
 }

@@ -11,7 +11,6 @@ import lombok.Setter;
 import java.math.BigDecimal;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -26,8 +25,8 @@ public class RequestEntity {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY,  cascade=CascadeType.ALL)
-    @JoinColumn(name = "user_id", nullable = false,unique = true)
+    @ManyToOne(fetch = FetchType.LAZY,  cascade={CascadeType.MERGE})
+    @JoinColumn(name = "user_id", nullable = false,unique = false)
     private UserEntity user;
 
     private String address;
@@ -37,13 +36,13 @@ public class RequestEntity {
     private BigDecimal latitude;
     private BigDecimal longitude;
 
-    @ManyToMany(fetch = FetchType.LAZY) //todo(??) может сделать каскад хз
+    @ManyToMany(fetch = FetchType.LAZY,  cascade={CascadeType.MERGE})
     @JoinTable(name = "requests_tags",
-            joinColumns = @JoinColumn(name = "tag_id", nullable = false),
-            inverseJoinColumns = @JoinColumn(name = "request_id", nullable = false))
+            joinColumns = @JoinColumn(name = "request_id", nullable = false),
+            inverseJoinColumns = @JoinColumn(name = "tag_id", nullable = false))
     public List<TagEntity> tags;
 
-    @OneToMany(mappedBy = "request",fetch = FetchType.LAZY, cascade=CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "request",fetch = FetchType.LAZY, cascade=CascadeType.ALL/*, orphanRemoval = true*/)
     private List<LikeEntity> likes;
 
     @Column(name = "header_request")
