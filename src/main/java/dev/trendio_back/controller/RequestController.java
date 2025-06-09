@@ -7,6 +7,9 @@ import dev.trendio_back.service.RequestService;
 import dev.trendio_back.service.TagService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,13 +23,14 @@ public class RequestController {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public Page<RequestDto> getAllRequests(
-            //todo dto pageable
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size,
             @RequestParam(defaultValue = "id") String sortField,
             @RequestParam(defaultValue = "asc") String sortDirection
     ) {
-        return requestService.findAll(page, size, sortField, sortDirection);
+        Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), sortField);
+        Pageable pageable = PageRequest.of(page, size, sort);
+        return requestService.findAll(pageable);
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)

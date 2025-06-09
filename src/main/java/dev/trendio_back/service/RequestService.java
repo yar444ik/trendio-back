@@ -42,11 +42,7 @@ public class RequestService {
     private final CommentMapper commentMapper;
     private final TagRepository tagRepository;
 
-    public Page<RequestDto> findAll(int page, int size, String sortField, String sortDirection) {
-        //todo(?) collect Pageable in controller
-        //todo отсюда
-        Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), sortField);
-        Pageable pageable = PageRequest.of(page, size, sort); //todo в контроллере
+    public Page<RequestDto> findAll(Pageable pageable) {
         Page<RequestEntity> requestEntities = requestRepository.findAll(pageable);
         return requestEntities.map(requestMapper::entityToDto);
     }
