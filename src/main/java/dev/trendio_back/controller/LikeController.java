@@ -8,6 +8,7 @@ import dev.trendio_back.repository.UserRepository;
 import dev.trendio_back.service.LikeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,19 +18,20 @@ import java.util.List;
 @RequestMapping("/api/likes")
 @RequiredArgsConstructor
 public class LikeController {
+    
     private final LikeService likeService;
 
     @PostMapping("/{requestId}")
-    public LikeDto likeRequest(@RequestBody Long userId,
+    public LikeDto likeRequest(@AuthenticationPrincipal AuthUser authUser,
                                @PathVariable Long requestId) {
-        return likeService.likeRequest(userId, requestId);
+        return likeService.likeRequest(authUser.getUsername(), requestId);
     }
 
     @DeleteMapping("/{requestId}")
     public void unlikeRequest(
-            @RequestBody Long userId,
+            @AuthenticationPrincipal AuthUser authUser,
             @PathVariable Long requestId) {
-        likeService.unlikeRequest(userId, requestId);
+        likeService.unlikeRequest(authUser.getUsername(), requestId);
     }
 
     @GetMapping("/request/{requestId}")

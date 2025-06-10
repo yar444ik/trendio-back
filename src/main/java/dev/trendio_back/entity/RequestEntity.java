@@ -26,15 +26,15 @@ public class RequestEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY,  cascade={CascadeType.MERGE})
-    @JoinColumn(name = "user_id", nullable = false,unique = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user;
 
     private String address;
     @Column(name = "create_date")
     private LocalDateTime createDate;
 
-    private BigDecimal latitude;
-    private BigDecimal longitude;
+    private double latitude;
+    private double longitude;
 
     @ManyToMany(fetch = FetchType.LAZY,  cascade={CascadeType.MERGE})
     @JoinTable(name = "requests_tags",

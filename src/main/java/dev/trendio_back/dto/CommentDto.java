@@ -11,9 +11,10 @@ import java.time.LocalDateTime;
 @ToString
 public class CommentDto {
     private Long id;
-    private Long usernameId;
+    private Long userId;
     private Long requestId;
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
-    private String comment;
+    private String username;
+    private String text;
 }

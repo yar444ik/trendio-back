@@ -21,8 +21,8 @@ public class RequestDto {
     private String address;
     private LocalDateTime createDate;
 
-    private BigDecimal latitude;
-    private BigDecimal longitude;
+    private double latitude;
+    private double longitude;
 
     private List<TagDto> tags;
     private List<LikeDto> likes;

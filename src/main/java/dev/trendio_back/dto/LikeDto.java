@@ -13,6 +13,6 @@ import java.util.List;
 public class LikeDto {
     private Long id;
     private LocalDateTime createDate;
-    private String username;
-    private String request;
+    private Long requestId;
+    private Long userId;
 }

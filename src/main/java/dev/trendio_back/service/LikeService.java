@@ -22,10 +22,12 @@ import java.util.Optional;
 public class LikeService {
     private final LikeRepository likeRepository;
     private final LikeMapper likeMapper;
+    private final UserRepository userRepository;
 
-    public LikeDto likeRequest(Long userId, Long requestId) {
+    public LikeDto likeRequest(String username, Long requestId) {
         LikeEntity like = new LikeEntity();
 
+        Long userId = userRepository.findByUsername(username).orElseThrow(ResourceNotFoundException::new).getId();
         like.setUser(UserEntity.of(userId));
         like.setRequest(RequestEntity.of(requestId));
         like.setCreateDate(LocalDateTime.now());
@@ -35,7 +37,8 @@ public class LikeService {
         return likeMapper.entityToDto(like);
     }
 
-    public void unlikeRequest(Long userId, Long requestId) {
+    public void unlikeRequest(String username, Long requestId) {
+        Long userId = userRepository.findByUsername(username).orElseThrow(ResourceNotFoundException::new).getId();
         LikeEntity like = likeRepository.findByUserIdAndRequestId(userId, requestId);
         likeRepository.delete(like);
     }

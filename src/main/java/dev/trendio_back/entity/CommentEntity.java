@@ -23,18 +23,20 @@ public class CommentEntity {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
-    @JoinColumn(name = "comments_user")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
-    @JoinColumn(name = "comments_request")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "request_id", nullable = false)
     private RequestEntity request;
 
     @Column(name = "create_date")
     private LocalDateTime createDate;
     @Column(name = "update_date")
     private LocalDateTime updateDate;
+    @Column(name = "username")
+    private String username;
     @Column(name = "text")
-    private String comment;
+    private String text;
 }

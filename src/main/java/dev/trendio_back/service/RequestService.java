@@ -29,14 +29,11 @@ import java.util.stream.Collectors;
 
 
 @Service
-@Component
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class RequestService {
     private final RequestRepository requestRepository;
     private final UserRepository userRepository;
-    private final TagService tagService;
     private final TagMapper tagMapper;
-    private final UserMapper userMapper;
     private final RequestMapper requestMapper;
     private final LikeMapper likeMapper;
     private final CommentMapper commentMapper;

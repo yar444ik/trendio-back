@@ -11,19 +11,23 @@ import java.util.List;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface CommentMapper {
 
-    @Mapping(target = "user.id", source = "usernameId")
+    @Mapping(source = "username", target = "user.username")
+    @Mapping(source = "userId", target = "user.id")
     @Mapping(source = "requestId", target = "request.id")
     CommentEntity dtoToEntity(CommentDto dto);
 
-    @Mapping(target = "user.id", source = "usernameId")
+    @Mapping(source = "username", target = "user.username")
+    @Mapping(source = "userId", target = "user.id")
     @Mapping(source = "requestId", target = "request.id")
     List<CommentEntity> listDtoToEntity(List<CommentDto> dtos);
 
-    @Mapping(target = "usernameId", source = "user.id")
+    @Mapping(source = "user.username", target = "username")
+    @Mapping(source = "user.id", target = "userId")
     @Mapping(source = "request.id", target = "requestId")
     CommentDto entityToDto(CommentEntity entity);
 
-    @Mapping(target = "usernameId", source = "user.id")
+    @Mapping(source = "user.username", target = "username")
+    @Mapping(source = "user.id", target = "userId")
     @Mapping(source = "request.id", target = "requestId")
     List<CommentDto> listEntityToDto(List<CommentEntity> entities);
 }

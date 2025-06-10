@@ -40,8 +40,8 @@ public class InitializerService {
                 .username(user.getUsername())
                 .address("hui")
                 .tags(tags)
-                .latitude(BigDecimal.valueOf(51.662856))
-                .longitude(BigDecimal.valueOf(39.1979146))
+                .latitude(51.662856)
+                .longitude(39.1979146)
                 .build());
     }
 }

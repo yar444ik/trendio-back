@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@Component
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class TagService {
 

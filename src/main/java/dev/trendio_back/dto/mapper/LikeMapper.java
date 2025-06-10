@@ -11,23 +11,23 @@ import java.util.List;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface LikeMapper {
-    @Mapping(source = "username", target = "user.id")
-    @Mapping(source = "request", target = "request.id")
+    @Mapping(source = "userId", target = "user.id")
+    @Mapping(source = "requestId", target = "request.id")
     @Mapping(target = "createDate", ignore = true)
     LikeEntity dtoToEntity(LikeDto dto);
 
-    @Mapping(source = "username", target = "user.id")
-    @Mapping(source = "request", target = "request.id")
+    @Mapping(source = "userId", target = "user.id")
+    @Mapping(source = "requestId", target = "request.id")
     @Mapping(target = "createDate", ignore = true)
     List<LikeEntity> listDtoToEntity(List<LikeDto> dtos);
 
-    @Mapping(source = "user.id", target = "username")
-    @Mapping(source = "request.id", target = "request")
+    @Mapping(source = "user.id", target = "userId")
+    @Mapping(source = "request.id", target = "requestId")
     @Mapping(target = "createDate", source = "createDate")
     LikeDto entityToDto(LikeEntity entity);
 
-    @Mapping(source = "user.id", target = "username")
-    @Mapping(source = "request.id", target = "request")
+    @Mapping(source = "user.id", target = "userId")
+    @Mapping(source = "request.id", target = "requestId")
     @Mapping(target = "createDate", source = "createDate")
     List<LikeDto> listEntityToDto(List<LikeEntity> entity);
 }
