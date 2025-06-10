@@ -1,9 +1,13 @@
 package dev.trendio_back.controller;
 
+import dev.trendio_back.dto.exception.ExceptionMessageDto;
 import dev.trendio_back.exception.ExistsException;
-import org.springframework.data.rest.webmvc.support.ExceptionMessage;
+import dev.trendio_back.exception.NotFoundException;
+import dev.trendio_back.exception.NotUniqException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
@@ -12,30 +16,44 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 public class AdviceController {
 
     @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<ExceptionMessage> notFoundException(NotFoundException exception) {
+    public ResponseEntity<ExceptionMessageDto> notFoundException(NotFoundException exception) {
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
-                .body(new ExceptionMessage(exception.getMessage()));
+                .body(new ExceptionMessageDto(exception.getMessage()));
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-    public ResponseEntity<ExceptionMessage> mismatchException(MethodArgumentTypeMismatchException exception) {
+    public ResponseEntity<ExceptionMessageDto> mismatchException(MethodArgumentTypeMismatchException exception) {
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
-                .body(new ExceptionMessage(exception.getMessage()));
+                .body(new ExceptionMessageDto(exception.getMessage()));
     }
 
     @ExceptionHandler(ExistsException.class)
-    public ResponseEntity<ExceptionMessage> existsException(ExistsException exception) {
+    public ResponseEntity<ExceptionMessageDto> existsException(ExistsException exception) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(new ExceptionMessage(exception.getMessage()));
+                .body(new ExceptionMessageDto(exception.getMessage()));
     }
 
     @ExceptionHandler(NotUniqException.class)
-    public ResponseEntity<ExceptionMessage> notUniqException(NotUniqException exception) {
+    public ResponseEntity<ExceptionMessageDto> notUniqException(NotUniqException exception) {
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
-                .body(new ExceptionMessage(exception.getMessage()));
+                .body(new ExceptionMessageDto(exception.getMessage()));
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ExceptionMessageDto> badCredentialsException(BadCredentialsException exception) {
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body(new ExceptionMessageDto(exception.getMessage()));
+    }
+
+    @ExceptionHandler(DisabledException.class)
+    public ResponseEntity<ExceptionMessageDto> disabledException(DisabledException exception) {
+        return ResponseEntity
+                .status(HttpStatus.FORBIDDEN)
+                .body(new ExceptionMessageDto(exception.getMessage()));
     }
 }

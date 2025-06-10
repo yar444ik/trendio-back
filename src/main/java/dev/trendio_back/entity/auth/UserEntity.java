@@ -20,7 +20,6 @@ public class UserEntity {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
 
-    //todo(возникает ошибка) unique here and in flyway
     private String username;
     private boolean enabled;
 

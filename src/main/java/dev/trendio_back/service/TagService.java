@@ -31,7 +31,6 @@ public class TagService {
     }
 
     public TagDto create(TagDto tagDto) {
-        //todo handle by constraint in advice, 400, already exist or use another http status
         return tagMapper.entityToDto(
                 tagRepository.save(tagMapper.dtoToEntity(tagDto))
         );
