@@ -8,5 +8,6 @@ import lombok.ToString;
 @Builder
 @ToString
 public class ImageDto {
+    private Long id;
     private String imageUrl;
 }

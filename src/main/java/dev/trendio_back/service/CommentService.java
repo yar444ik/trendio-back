@@ -7,9 +7,7 @@ import dev.trendio_back.exception.NotFoundException;
 import dev.trendio_back.repository.CommentRepository;
 import dev.trendio_back.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +31,7 @@ public class CommentService {
     }
 
     public CommentDto create (CommentDto comment, String username) {
+        //todo убрать запрос в юзеррепозиторий и сразу получать с помощью @AuthPrincipal айдишник юзера
         comment.setUserId(userRepository.findUserIdByUsername(username));
         comment.setUsername(username);
         comment.setCreateDate(LocalDateTime.now());
@@ -42,6 +41,7 @@ public class CommentService {
 
     public CommentDto update (CommentDto comment, String username, Long id) {
         CommentEntity oldComment = commentRepository.findByRequestId(id);
+        //todo убрать запрос в юзеррепозиторий и сразу получать с помощью @AuthPrincipal айдишник юзера
         Long AuthUserId = userRepository.findUserIdByUsername(username);
         comment.setId(id);
         comment.setUserId(AuthUserId);

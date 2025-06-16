@@ -1,7 +1,6 @@
 package dev.trendio_back.service;
 
 import dev.trendio_back.dto.RequestDto;
-import dev.trendio_back.dto.TagDto;
 import dev.trendio_back.dto.mapper.*;
 import dev.trendio_back.entity.RequestEntity;
 import dev.trendio_back.entity.TagEntity;
@@ -10,21 +9,14 @@ import dev.trendio_back.repository.RequestRepository;
 import dev.trendio_back.repository.TagRepository;
 import dev.trendio_back.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -62,9 +54,11 @@ public class RequestService {
     }
 
     RequestEntity createOrUpdateFromDtoToEntity(RequestDto dto, RequestEntity entity) {
+        //todo убрать запрос в юзеррепозиторий и сразу получать с помощью @AuthPrincipal айдишник юзера
         String username = dto.getUsername();
         UserEntity user = userRepository.findByUsername(username).orElseThrow();
         entity.setUser(user);
+
         entity.setAddress( dto.getAddress() );
         if (entity.getCreateDate() == null) {
             entity.setCreateDate(LocalDateTime.now());

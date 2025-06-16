@@ -9,7 +9,6 @@ import dev.trendio_back.service.auth.JwtUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @Component
@@ -38,7 +37,7 @@ public class InitializerService {
 
         requestService.create(RequestDto.builder()
                 .username(user.getUsername())
-                .address("hui")
+                .address("plehanovskaya 11")
                 .tags(tags)
                 .latitude(51.662856)
                 .longitude(39.1979146)

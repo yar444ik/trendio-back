@@ -1,12 +1,7 @@
 package dev.trendio_back.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import dev.trendio_back.entity.LikeEntity;
-import dev.trendio_back.entity.TagEntity;
 import lombok.*;
 
-import java.math.BigDecimal;
-import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.List;
 

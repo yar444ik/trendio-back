@@ -8,7 +8,6 @@ import dev.trendio_back.entity.auth.PasswordEntity;
 import dev.trendio_back.entity.auth.UserEntity;
 import dev.trendio_back.exception.ExistsException;
 import dev.trendio_back.repository.UserRepository;
-import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

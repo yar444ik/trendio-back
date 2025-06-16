@@ -1,6 +1,5 @@
 package dev.trendio_back.repository;
 
-import dev.trendio_back.dto.TagDto;
 import dev.trendio_back.entity.TagEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

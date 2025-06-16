@@ -1,10 +1,7 @@
 package dev.trendio_back.controller;
 
-import dev.trendio_back.dto.LikeDto;
 import dev.trendio_back.dto.RequestDto;
-import dev.trendio_back.dto.TagDto;
 import dev.trendio_back.service.RequestService;
-import dev.trendio_back.service.TagService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,8 +9,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("api/requests")

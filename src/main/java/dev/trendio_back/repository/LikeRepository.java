@@ -1,11 +1,8 @@
 package dev.trendio_back.repository;
 
 import dev.trendio_back.entity.LikeEntity;
-import dev.trendio_back.entity.RequestEntity;
-import dev.trendio_back.entity.auth.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;

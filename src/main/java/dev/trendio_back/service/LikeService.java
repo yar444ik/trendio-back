@@ -6,16 +6,13 @@ import dev.trendio_back.entity.LikeEntity;
 import dev.trendio_back.entity.RequestEntity;
 import dev.trendio_back.entity.auth.UserEntity;
 import dev.trendio_back.repository.LikeRepository;
-import dev.trendio_back.repository.RequestRepository;
 import dev.trendio_back.repository.UserRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +24,7 @@ public class LikeService {
     public LikeDto likeRequest(String username, Long requestId) {
         LikeEntity like = new LikeEntity();
 
+        //todo убрать запрос в юзеррепозиторий и сразу получать с помощью @AuthPrincipal айдишник юзера
         Long userId = userRepository.findByUsername(username).orElseThrow(ResourceNotFoundException::new).getId();
         like.setUser(UserEntity.of(userId));
         like.setRequest(RequestEntity.of(requestId));
@@ -38,6 +36,7 @@ public class LikeService {
     }
 
     public void unlikeRequest(String username, Long requestId) {
+        //todo убрать запрос в юзеррепозиторий и сразу получать с помощью @AuthPrincipal айдишник юзера
         Long userId = userRepository.findByUsername(username).orElseThrow(ResourceNotFoundException::new).getId();
         LikeEntity like = likeRepository.findByUserIdAndRequestId(userId, requestId);
         likeRepository.delete(like);

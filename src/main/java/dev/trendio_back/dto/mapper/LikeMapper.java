@@ -1,7 +1,6 @@
 package dev.trendio_back.dto.mapper;
 
 import dev.trendio_back.dto.LikeDto;
-import dev.trendio_back.dto.TagDto;
 import dev.trendio_back.entity.LikeEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

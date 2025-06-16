@@ -1,14 +1,11 @@
 package dev.trendio_back.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import dev.trendio_back.entity.auth.UserEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
 import java.util.Objects;
 
 @Entity

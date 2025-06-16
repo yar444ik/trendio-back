@@ -6,11 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import dev.trendio_back.entity.RequestEntity;
 
-import java.sql.Date;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Getter

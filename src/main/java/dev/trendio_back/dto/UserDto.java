@@ -1,7 +1,5 @@
 package dev.trendio_back.dto;
 
-import dev.trendio_back.entity.ImageEntity;
-import dev.trendio_back.entity.RequestEntity;
 import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
