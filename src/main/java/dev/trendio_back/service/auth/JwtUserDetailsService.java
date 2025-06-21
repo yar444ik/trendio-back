@@ -26,6 +26,7 @@ public class JwtUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        //todo call two times in createToken, fix it
         UserEntity user = userRepository.findByUsername(username).orElseThrow(
                 () -> new UsernameNotFoundException(String.format("User %s not found", username))
         );

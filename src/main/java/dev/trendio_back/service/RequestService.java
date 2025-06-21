@@ -54,7 +54,6 @@ public class RequestService {
     }
 
     RequestEntity createOrUpdateFromDtoToEntity(RequestDto dto, RequestEntity entity) {
-        //todo убрать запрос в юзеррепозиторий и сразу получать с помощью @AuthPrincipal айдишник юзера
         String username = dto.getUsername();
         UserEntity user = userRepository.findByUsername(username).orElseThrow();
         entity.setUser(user);

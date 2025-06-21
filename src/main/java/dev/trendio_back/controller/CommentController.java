@@ -18,11 +18,13 @@ public class CommentController {
 
     @GetMapping("/request/{requestId}")
     public List<CommentDto> getCommentsForRoute(@PathVariable("requestId") long requestId ) {
+        //todo add pageable , think over tree load algorithm, look at vk, youtube, habr comments
         return commentService.findAllForRequest(requestId);
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public CommentDto addComment(@RequestBody CommentDto comment) {
+        //todo principal or other
         String username = AuthenticationController.getCurrentUsername();
         return commentService.create(comment, username);
     }

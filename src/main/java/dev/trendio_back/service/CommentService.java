@@ -31,7 +31,7 @@ public class CommentService {
     }
 
     public CommentDto create (CommentDto comment, String username) {
-        //todo убрать запрос в юзеррепозиторий и сразу получать с помощью @AuthPrincipal айдишник юзера
+        //todo ???
         comment.setUserId(userRepository.findUserIdByUsername(username));
         comment.setUsername(username);
         comment.setCreateDate(LocalDateTime.now());
@@ -41,7 +41,7 @@ public class CommentService {
 
     public CommentDto update (CommentDto comment, String username, Long id) {
         CommentEntity oldComment = commentRepository.findByRequestId(id);
-        //todo убрать запрос в юзеррепозиторий и сразу получать с помощью @AuthPrincipal айдишник юзера
+        //todo ???
         Long AuthUserId = userRepository.findUserIdByUsername(username);
         comment.setId(id);
         comment.setUserId(AuthUserId);
@@ -53,6 +53,7 @@ public class CommentService {
 
     public Long delete(Long id) {
         if (commentRepository.existsById(id)) {
+            //todo check on exists not necessary, handle exception if it needs
             commentRepository.deleteById(id);
             return id;
         } else {

@@ -11,6 +11,7 @@ public interface CommentRepository extends JpaRepository<CommentEntity, Long> {
 
     CommentEntity findByRequestId(long requestId);
 
+    //todo show sql and look at the amount of joins .user.username, use userId
     @Query("SELECT COUNT(c) >0  from CommentEntity c WHERE c.user.username = :username AND c.id = :commentId")
     boolean isCreator(String username, long commentId);
 }

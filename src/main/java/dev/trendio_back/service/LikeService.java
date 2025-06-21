@@ -24,7 +24,7 @@ public class LikeService {
     public LikeDto likeRequest(String username, Long requestId) {
         LikeEntity like = new LikeEntity();
 
-        //todo убрать запрос в юзеррепозиторий и сразу получать с помощью @AuthPrincipal айдишник юзера
+        //todo ??
         Long userId = userRepository.findByUsername(username).orElseThrow(ResourceNotFoundException::new).getId();
         like.setUser(UserEntity.of(userId));
         like.setRequest(RequestEntity.of(requestId));
@@ -36,7 +36,7 @@ public class LikeService {
     }
 
     public void unlikeRequest(String username, Long requestId) {
-        //todo убрать запрос в юзеррепозиторий и сразу получать с помощью @AuthPrincipal айдишник юзера
+        //todo ???
         Long userId = userRepository.findByUsername(username).orElseThrow(ResourceNotFoundException::new).getId();
         LikeEntity like = likeRepository.findByUserIdAndRequestId(userId, requestId);
         likeRepository.delete(like);

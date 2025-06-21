@@ -11,6 +11,7 @@ import java.util.Optional;
 public interface LikeRepository extends JpaRepository<LikeEntity, Long> {
     LikeEntity findByUserIdAndRequestId(Long userId, Long requestId);
 
+    //todo check sql
     @Query("SELECT l FROM LikeEntity l WHERE l.request.id = :requestId")
     List<LikeEntity> findLikesByRequestId(@Param("requestId") Long requestId);
 }

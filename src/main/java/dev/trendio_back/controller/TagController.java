@@ -14,9 +14,11 @@ import java.util.List;
 public class TagController {
     private final TagService tagService;
 
+
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<TagDto> getAllTags() { return tagService.findAll(); }
 
+    //todo pageable with sort and filter like stackoverflow
     @GetMapping("/top25")
     public List<TagDto> getTop25TagsByCount() {
         return tagService.getTop25TagsByCount();

@@ -46,11 +46,14 @@ public class AvatarService {
                             .contentType(file.getContentType())
                             .build()
             );
+            //todo ???
             String imageUrl =  "http://localhost:9000/" + bucket + "/" + newFileName;
             ImageEntity imageEntity = create(ImageDto.builder().imageUrl(imageUrl).build());
             UserEntity user = userRepository.findByUsername(username).orElseThrow(() -> new NotFoundException("User with username: \" + username + \" not found"));
             user.setAvatar(imageEntity);
             userRepository.save(user);
+            //check transaction, ACID, you put file into minio, and got exception in userRepository.save,
+                //what happened with file, which saved in minio
             return newFileName;
         }
         catch (Exception e) {

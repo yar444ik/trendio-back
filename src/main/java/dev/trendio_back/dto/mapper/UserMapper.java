@@ -14,6 +14,7 @@ public interface UserMapper {
     @Mapping(target = "enabled", ignore = true)
     @Mapping(target = "role", source = "role")
     @Mapping(target = "avatar.imageUrl", source = "avatar")
+    //todo is it necessary?
     @Mapping(target = "likes", source = "likes")
     @Mapping(target = "comments", source = "comments")
     @Mapping(target = "requests", source = "requests")
@@ -30,6 +31,7 @@ public interface UserMapper {
 
     @Mapping(target = "role", source = "role")
     @Mapping(target = "avatar", source = "avatar.imageUrl")
+    //todo ??
     @Mapping(target = "likes", source = "likes")
     @Mapping(target = "comments", source = "comments")
     @Mapping(target = "requests", source = "requests")
@@ -37,6 +39,7 @@ public interface UserMapper {
 
     @Mapping(target = "role", source = "role")
     @Mapping(target = "avatar", source = "avatar.imageUrl")
+    //todo ??
     @Mapping(target = "likes", source = "likes")
     @Mapping(target = "comments", source = "comments")
     @Mapping(target = "requests", source = "requests")

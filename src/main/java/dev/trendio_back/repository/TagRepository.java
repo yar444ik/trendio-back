@@ -14,7 +14,8 @@ public interface TagRepository extends JpaRepository<TagEntity, Long> {
     List<TagEntity> findAllByNameTagIn(List<String> nameTags);
 
     @Query(
-            value = "SELECT t.id, t.name_tag, COUNT(rt.request_id) AS cnt " +
+            value = "SELECT t.id, " +
+                    "t.name_tag, COUNT(rt.request_id) AS cnt " +
                     "FROM tags t " +
                     "JOIN requests_tags rt ON t.id = rt.tag_id " +
                     "GROUP BY t.id " +

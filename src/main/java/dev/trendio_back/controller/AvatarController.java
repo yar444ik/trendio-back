@@ -14,6 +14,7 @@ public class AvatarController {
 
     @PostMapping("/upload")
     public String uploadAvatar(@RequestParam("file") MultipartFile file) {
+        //todo use either principal or holder
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         return avatarService.uploadFile(file, username);
     }

@@ -28,18 +28,19 @@ public class AuthenticationController {
     private final TokenManager tokenManager;
 
     @PostMapping("/login")
-    public ResponseEntity<JwtResponse> createToken(@RequestBody JwtRequest request) throws DisabledException, BadCredentialsException {
-        try {
+    public ResponseEntity<JwtResponse> createToken(@RequestBody JwtRequest request) throws DisabledException,
+            BadCredentialsException {
+        //try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
             );
-        }
+        /*}
         catch (DisabledException e) {
             throw new DisabledException(String.format("%s", e.getMessage()));
         }
         catch (BadCredentialsException e) {
             throw new BadCredentialsException(String.format("%s", e.getMessage()));
-        }
+        }*/
 
         final UserDetails userDetails = userDetailsService.loadUserByUsername(request.getUsername());
         return new ResponseEntity<>(new JwtResponse(tokenManager.generateJwtToken(userDetails)), HttpStatus.CREATED);

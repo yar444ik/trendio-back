@@ -33,6 +33,7 @@ public class RequestController {
         return requestService.create(newRequest);
     }
 
+    //todo security check can current user modify Request
     @DeleteMapping(value="/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Long deleteRequest(@PathVariable Long id) { return requestService.delete(id); }
 
