@@ -6,7 +6,6 @@ import dev.trendio_back.dto.mapper.CommentMapper;
 import dev.trendio_back.entity.CommentEntity;
 import dev.trendio_back.exception.NotFoundException;
 import dev.trendio_back.repository.CommentRepository;
-import dev.trendio_back.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -21,7 +20,6 @@ import java.util.List;
 public class CommentService {
     private final CommentRepository commentRepository;
     private final CommentMapper commentMapper;
-    private final UserRepository userRepository;
 
     public List<CommentDto> findAllForRequest (long requestId) {
         return commentMapper.listEntityToDto(commentRepository.findAllByRequestId(requestId));
@@ -51,7 +49,7 @@ public class CommentService {
 
     public Long delete(Long id) {
         try {
-            //todo(?????) check on exists not necessary, handle exception if it needs
+            //todo(???правильно ли исправил???) check on exists not necessary, handle exception if it needs
             commentRepository.deleteById(id);
             return id;
         } catch (Exception ex) {

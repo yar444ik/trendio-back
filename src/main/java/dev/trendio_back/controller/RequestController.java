@@ -36,8 +36,8 @@ public class RequestController {
     }
 
     @DeleteMapping(value="/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public void deleteRequest(@AuthenticationPrincipal AuthUser authUser, @PathVariable Long id) {
-        requestService.delete(id, authUser);
+    public Long deleteRequest(@AuthenticationPrincipal AuthUser authUser, @PathVariable Long id) {
+        return requestService.delete(id, authUser);
     }
 
     @PutMapping(value="/{id}", produces = MediaType.APPLICATION_JSON_VALUE)

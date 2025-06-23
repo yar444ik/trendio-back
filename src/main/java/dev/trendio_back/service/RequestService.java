@@ -1,35 +1,32 @@
 package dev.trendio_back.service;
 
 import dev.trendio_back.dto.RequestDto;
+import dev.trendio_back.dto.TagDto;
 import dev.trendio_back.dto.auth.AuthUser;
 import dev.trendio_back.dto.mapper.*;
 import dev.trendio_back.entity.RequestEntity;
 import dev.trendio_back.entity.TagEntity;
-import dev.trendio_back.entity.auth.UserEntity;
 import dev.trendio_back.repository.RequestRepository;
-import dev.trendio_back.repository.TagRepository;
-import dev.trendio_back.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Objects;
 
 
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class RequestService {
     private final RequestRepository requestRepository;
-    private final TagMapper tagMapper;
     private final RequestMapper requestMapper;
-    private final LikeMapper likeMapper;
-    private final CommentMapper commentMapper;
-    private final TagRepository tagRepository;
+    private final TagService tagService;
+    private final TagMapper tagMapper;
 
     public Page<RequestDto> findAll(Pageable pageable) {
         Page<RequestEntity> requestEntities = requestRepository.findAll(pageable);
@@ -37,47 +34,36 @@ public class RequestService {
     }
 
     public RequestDto create(RequestDto request, AuthUser authUser) {
-        RequestEntity requestEntity = new RequestEntity();
-        return requestMapper.entityToDto(requestRepository.save(createOrUpdateFromDtoToEntity(request, requestEntity, authUser)));
-
+        request.setUserId(authUser.getId());
+        request.setUsername(authUser.getUsername());
+        request.setCreateDate(LocalDateTime.now());
+        List<TagDto> tags = tagService.create(request.getTags());
+        request.setTags(tags);
+        RequestEntity requestEntity = requestRepository.save(requestMapper.dtoToEntity(request));
+        return requestMapper.entityToDto(requestEntity);
     }
 
-    public void delete(Long id, AuthUser authUser) {
-        RequestEntity requestEntity = requestRepository.findByUserIdAndRequestId(authUser.getId(), id);
+    public Long delete(Long id, AuthUser authUser) {
+        RequestEntity requestEntity = requestRepository.findByUserIdAndId(authUser.getId(), id)
+                .orElseThrow(() -> new AccessDeniedException("You don't have permission to update this request"));
         requestRepository.delete(requestEntity);
+        return id;
     }
 
     public RequestDto update(RequestDto request, AuthUser authUser, Long id) {
-        RequestEntity requestEntity = requestRepository.findById(id)
+        RequestEntity oldRequestEntity = requestRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Request not found"));
-        return requestMapper.entityToDto(requestRepository.save(createOrUpdateFromDtoToEntity(request, requestEntity, authUser)));
-    }
-
-    RequestEntity createOrUpdateFromDtoToEntity(RequestDto dto, RequestEntity entity, AuthUser authUser) {
-        entity.setUser(UserEntity.of(authUser.getId()));
-
-        entity.setAddress( dto.getAddress() );
-        if (entity.getCreateDate() == null) {
-            entity.setCreateDate(LocalDateTime.now());
-        } else {
-            entity.setCreateDate(entity.getCreateDate());
+        if (Objects.equals(authUser.getId(), oldRequestEntity.getUser().getId())) {
+            RequestEntity newRequestEntity = requestMapper.dtoToEntity(request);
+            newRequestEntity.setId(id);
+            newRequestEntity.setUser(oldRequestEntity.getUser());
+            newRequestEntity.setCreateDate(oldRequestEntity.getCreateDate());
+            List<TagEntity> tags = tagMapper.listDtoToEntity(tagService.create(request.getTags()));
+            newRequestEntity.setTags(tags);
+            return requestMapper.entityToDto(requestRepository.save(newRequestEntity));
         }
-        entity.setLatitude( dto.getLatitude() );
-        entity.setLongitude( dto.getLongitude() );
-
-        List<TagEntity> allTags = dto.getTags().stream().map(tagMapper::dtoToEntity).toList();
-        List<TagEntity> fromDb = tagRepository.findAllByNameTagIn(allTags.stream().map(TagEntity::getNameTag).collect(Collectors.toList()));
-        List<TagEntity> notInDb = allTags.stream().filter(tag -> !fromDb.contains(tag)).toList();
-        List<TagEntity> result = new java.util.ArrayList<>();
-        result.addAll(tagRepository.saveAllAndFlush(notInDb));
-        result.addAll(fromDb);
-        entity.setTags(result);
-
-
-        entity.setLikes( likeMapper.listDtoToEntity( dto.getLikes() ) );
-        entity.setHeaderRequest( dto.getHeaderRequest() );
-        entity.setTextRequest( dto.getTextRequest() );
-        entity.setComments( commentMapper.listDtoToEntity( dto.getComments() ) );
-        return entity;
+        else {
+            throw new AccessDeniedException("You don't have permission to update this request");
+        }
     }
 }

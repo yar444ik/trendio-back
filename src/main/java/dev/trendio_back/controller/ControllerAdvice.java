@@ -6,6 +6,7 @@ import dev.trendio_back.exception.NotFoundException;
 import dev.trendio_back.exception.NotUniqException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 @RestControllerAdvice
-public class AdviceController {
+public class ControllerAdvice {
 
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<ExceptionMessageDto> notFoundException(NotFoundException exception) {
@@ -52,6 +53,13 @@ public class AdviceController {
 
     @ExceptionHandler(DisabledException.class)
     public ResponseEntity<ExceptionMessageDto> disabledException(DisabledException exception) {
+        return ResponseEntity
+                .status(HttpStatus.FORBIDDEN)
+                .body(new ExceptionMessageDto(exception.getMessage()));
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ExceptionMessageDto> accessDeniedException(AccessDeniedException exception) {
         return ResponseEntity
                 .status(HttpStatus.FORBIDDEN)
                 .body(new ExceptionMessageDto(exception.getMessage()));

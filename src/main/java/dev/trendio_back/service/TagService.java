@@ -28,9 +28,13 @@ public class TagService {
         return tagEntities.stream().map(tagMapper::entityToDto).collect(Collectors.toList());
     }
 
-    public TagDto create(TagDto tagDto) {
-        return tagMapper.entityToDto(
-                tagRepository.save(tagMapper.dtoToEntity(tagDto))
-        );
+    public List<TagDto> create(List<TagDto> tagDtos) {
+        List<TagEntity> allTags = tagDtos.stream().map(tagMapper::dtoToEntity).toList();
+        List<TagEntity> fromDb = tagRepository.findAllByNameTagIn(allTags.stream().map(TagEntity::getNameTag).collect(Collectors.toList()));
+        List<TagEntity> notInDb = allTags.stream().filter(tag -> !fromDb.contains(tag)).toList();
+        List<TagEntity> result = new java.util.ArrayList<>();
+        result.addAll(tagRepository.saveAllAndFlush(notInDb));
+        result.addAll(fromDb);
+        return tagMapper.listEntityToDto(result);
     }
 }

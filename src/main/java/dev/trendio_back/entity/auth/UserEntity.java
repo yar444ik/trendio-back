@@ -20,6 +20,7 @@ public class UserEntity {
     private Long id;
 
     private String username;
+
     private boolean enabled;
 
     @Enumerated(EnumType.STRING)
@@ -34,13 +35,13 @@ public class UserEntity {
     @JoinColumn(name = "avatar_id")
     private ImageEntity avatar;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL, orphanRemoval = true, mappedBy = "user")
+    @OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL, mappedBy = "user")
     private List<LikeEntity> likes;
 
-    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY,cascade=CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY,cascade=CascadeType.ALL)
     private List<CommentEntity> comments;
 
-    @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true, mappedBy = "user")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private List<RequestEntity> requests;
 
     public static UserEntity of(Long id) {

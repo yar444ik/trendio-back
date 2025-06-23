@@ -22,7 +22,4 @@ public class TagController {
     public List<TagDto> getTop25TagsByCount() {
         return tagService.getTop25TagsByCount();
     }
-
-    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public TagDto createTag(@RequestBody TagDto newTag) { return tagService.create(newTag); }
 }

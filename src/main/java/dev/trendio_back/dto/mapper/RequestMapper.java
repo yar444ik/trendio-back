@@ -11,15 +11,19 @@ import java.util.List;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING, uses = {TagMapper.class,LikeMapper.class,CommentMapper.class})
 public interface RequestMapper {
 
+    @Mapping(target = "user.id", source = "userId")
     @Mapping(target = "user.username", source = "username")
     RequestEntity dtoToEntity(RequestDto dto);
 
+    @Mapping(target = "user.id", source = "userId")
     @Mapping(target = "user.username", source = "username")
     List<RequestEntity> listDtoToEntity(List<RequestDto> dtos);
 
+    @Mapping(target = "userId", source = "user.id")
     @Mapping(target = "username", source = "user.username")
     RequestDto entityToDto(RequestEntity entity);
 
+    @Mapping(target = "userId", source = "user.id")
     @Mapping(target = "username", source = "user.username")
     List<RequestDto> listEntityToDto(List<RequestEntity> entities);
 }

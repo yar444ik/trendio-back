@@ -28,18 +28,18 @@ public class InitializerService {
                 .password("1234")
                 .build());
 
-        TagDto tag1 = tagService.create(TagDto.builder()
-                .nameTag("test")
-                .build());
-
-        List<TagDto> tags = List.of(tag1);
+        List<TagDto> tags1 = tagService.create(List.of(
+                TagDto.builder()
+                        .nameTag("test")
+                        .build()
+        ));
 
         UserEntity user = userRepository.findByUsername("user1").orElseThrow();
 
         requestService.create(RequestDto.builder()
                 .username(user.getUsername())
                 .address("plehanovskaya 11")
-                .tags(tags)
+                .tags(tags1)
                 .latitude(51.662856)
                 .longitude(39.1979146)
                 .build(),
