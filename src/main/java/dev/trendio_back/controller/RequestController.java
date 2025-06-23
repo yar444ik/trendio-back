@@ -1,6 +1,7 @@
 package dev.trendio_back.controller;
 
 import dev.trendio_back.dto.RequestDto;
+import dev.trendio_back.dto.auth.AuthUser;
 import dev.trendio_back.service.RequestService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -8,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -29,16 +31,17 @@ public class RequestController {
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public RequestDto createRequest(@RequestBody RequestDto newRequest) {
-        return requestService.create(newRequest);
+    public RequestDto createRequest(@AuthenticationPrincipal AuthUser authUser, @RequestBody RequestDto newRequest) {
+        return requestService.create(newRequest, authUser);
     }
 
-    //todo security check can current user modify Request
     @DeleteMapping(value="/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Long deleteRequest(@PathVariable Long id) { return requestService.delete(id); }
+    public void deleteRequest(@AuthenticationPrincipal AuthUser authUser, @PathVariable Long id) {
+        requestService.delete(id, authUser);
+    }
 
     @PutMapping(value="/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public RequestDto changeRequest(@RequestBody RequestDto newRequest, @PathVariable Long id) {
-        return requestService.update(newRequest, id);
+    public RequestDto changeRequest(@AuthenticationPrincipal AuthUser authUser, @RequestBody RequestDto newRequest, @PathVariable Long id) {
+        return requestService.update(newRequest, authUser, id);
     }
 }

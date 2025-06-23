@@ -33,7 +33,7 @@ public class AvatarService {
     @Value("${minio.endpoint}")
     private String minioUrl;
 
-    public String uploadFile(MultipartFile file, String username) {
+    public String uploadFile(MultipartFile file, Long userId) {
         try {
             String fileName = file.getOriginalFilename();
             String newFileName = System.currentTimeMillis() + "." + StringUtils.substringAfterLast(fileName, ".");
@@ -46,14 +46,13 @@ public class AvatarService {
                             .contentType(file.getContentType())
                             .build()
             );
-            //todo ???
-            String imageUrl =  "http://localhost:9000/" + bucket + "/" + newFileName;
+            String imageUrl =  minioUrl + bucket + "/" + newFileName;
             ImageEntity imageEntity = create(ImageDto.builder().imageUrl(imageUrl).build());
-            UserEntity user = userRepository.findByUsername(username).orElseThrow(() -> new NotFoundException("User with username: \" + username + \" not found"));
+            UserEntity user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException("User не найден"));
             user.setAvatar(imageEntity);
             userRepository.save(user);
-            //check transaction, ACID, you put file into minio, and got exception in userRepository.save,
-                //what happened with file, which saved in minio
+            //todo     check transaction, ACID, you put file into minio, and got exception in userRepository.save,
+            // what happened with file, which saved in minio
             return newFileName;
         }
         catch (Exception e) {

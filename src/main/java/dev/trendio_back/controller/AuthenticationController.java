@@ -11,8 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,31 +26,15 @@ public class AuthenticationController {
     private final TokenManager tokenManager;
 
     @PostMapping("/login")
-    public ResponseEntity<JwtResponse> createToken(@RequestBody JwtRequest request) throws DisabledException,
-            BadCredentialsException {
-        //try {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
-            );
-        /*}
-        catch (DisabledException e) {
-            throw new DisabledException(String.format("%s", e.getMessage()));
-        }
-        catch (BadCredentialsException e) {
-            throw new BadCredentialsException(String.format("%s", e.getMessage()));
-        }*/
-
-        final UserDetails userDetails = userDetailsService.loadUserByUsername(request.getUsername());
-        return new ResponseEntity<>(new JwtResponse(tokenManager.generateJwtToken(userDetails)), HttpStatus.CREATED);
+    public ResponseEntity<JwtResponse> createToken(@RequestBody JwtRequest request) throws DisabledException, BadCredentialsException {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
+        );
+        return new ResponseEntity<>(new JwtResponse(tokenManager.generateJwtToken(authentication)), HttpStatus.CREATED);
     }
 
     @PostMapping("/register")
     public ResponseEntity<SignInResponse> register(@RequestBody SignInRequest request){
         return new ResponseEntity<>(userDetailsService.createUser(request), HttpStatus.CREATED);
-    }
-
-    public static String getCurrentUsername() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return authentication != null ? authentication.getName() : null;
     }
 }

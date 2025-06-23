@@ -1,6 +1,7 @@
 package dev.trendio_back.service;
 
 import dev.trendio_back.dto.RequestDto;
+import dev.trendio_back.dto.auth.AuthUser;
 import dev.trendio_back.dto.mapper.*;
 import dev.trendio_back.entity.RequestEntity;
 import dev.trendio_back.entity.TagEntity;
@@ -24,7 +25,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class RequestService {
     private final RequestRepository requestRepository;
-    private final UserRepository userRepository;
     private final TagMapper tagMapper;
     private final RequestMapper requestMapper;
     private final LikeMapper likeMapper;
@@ -36,27 +36,25 @@ public class RequestService {
         return requestEntities.map(requestMapper::entityToDto);
     }
 
-    public RequestDto create(RequestDto request) {
+    public RequestDto create(RequestDto request, AuthUser authUser) {
         RequestEntity requestEntity = new RequestEntity();
-        return requestMapper.entityToDto(requestRepository.save(createOrUpdateFromDtoToEntity(request, requestEntity)));
+        return requestMapper.entityToDto(requestRepository.save(createOrUpdateFromDtoToEntity(request, requestEntity, authUser)));
 
     }
 
-    public Long delete(Long id) {
-        requestRepository.deleteById(id);
-        return id;
+    public void delete(Long id, AuthUser authUser) {
+        RequestEntity requestEntity = requestRepository.findByUserIdAndRequestId(authUser.getId(), id);
+        requestRepository.delete(requestEntity);
     }
 
-    public RequestDto update(RequestDto request, Long id) {
+    public RequestDto update(RequestDto request, AuthUser authUser, Long id) {
         RequestEntity requestEntity = requestRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Request not found"));
-        return requestMapper.entityToDto(requestRepository.save(createOrUpdateFromDtoToEntity(request, requestEntity)));
+        return requestMapper.entityToDto(requestRepository.save(createOrUpdateFromDtoToEntity(request, requestEntity, authUser)));
     }
 
-    RequestEntity createOrUpdateFromDtoToEntity(RequestDto dto, RequestEntity entity) {
-        String username = dto.getUsername();
-        UserEntity user = userRepository.findByUsername(username).orElseThrow();
-        entity.setUser(user);
+    RequestEntity createOrUpdateFromDtoToEntity(RequestDto dto, RequestEntity entity, AuthUser authUser) {
+        entity.setUser(UserEntity.of(authUser.getId()));
 
         entity.setAddress( dto.getAddress() );
         if (entity.getCreateDate() == null) {

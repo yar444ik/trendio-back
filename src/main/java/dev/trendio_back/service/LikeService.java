@@ -8,7 +8,6 @@ import dev.trendio_back.entity.auth.UserEntity;
 import dev.trendio_back.repository.LikeRepository;
 import dev.trendio_back.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -21,11 +20,8 @@ public class LikeService {
     private final LikeMapper likeMapper;
     private final UserRepository userRepository;
 
-    public LikeDto likeRequest(String username, Long requestId) {
+    public LikeDto likeRequest(Long userId, Long requestId) {
         LikeEntity like = new LikeEntity();
-
-        //todo ??
-        Long userId = userRepository.findByUsername(username).orElseThrow(ResourceNotFoundException::new).getId();
         like.setUser(UserEntity.of(userId));
         like.setRequest(RequestEntity.of(requestId));
         like.setCreateDate(LocalDateTime.now());
@@ -35,9 +31,7 @@ public class LikeService {
         return likeMapper.entityToDto(like);
     }
 
-    public void unlikeRequest(String username, Long requestId) {
-        //todo ???
-        Long userId = userRepository.findByUsername(username).orElseThrow(ResourceNotFoundException::new).getId();
+    public void unlikeRequest(Long userId, Long requestId) {
         LikeEntity like = likeRepository.findByUserIdAndRequestId(userId, requestId);
         likeRepository.delete(like);
     }

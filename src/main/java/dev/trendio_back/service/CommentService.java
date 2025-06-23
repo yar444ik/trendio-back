@@ -1,6 +1,7 @@
 package dev.trendio_back.service;
 
 import dev.trendio_back.dto.CommentDto;
+import dev.trendio_back.dto.auth.AuthUser;
 import dev.trendio_back.dto.mapper.CommentMapper;
 import dev.trendio_back.entity.CommentEntity;
 import dev.trendio_back.exception.NotFoundException;
@@ -30,21 +31,18 @@ public class CommentService {
         return commentRepository.isCreator(username, commentId);
     }
 
-    public CommentDto create (CommentDto comment, String username) {
-        //todo ???
-        comment.setUserId(userRepository.findUserIdByUsername(username));
-        comment.setUsername(username);
+    public CommentDto create (CommentDto comment, AuthUser authUser) {
+        comment.setUserId(authUser.getId());
+        comment.setUsername(authUser.getUsername());
         comment.setCreateDate(LocalDateTime.now());
         return commentMapper.entityToDto(
                 commentRepository.save(commentMapper.dtoToEntity(comment)));
     }
 
-    public CommentDto update (CommentDto comment, String username, Long id) {
+    public CommentDto update (CommentDto comment, Long userId, Long id) {
         CommentEntity oldComment = commentRepository.findByRequestId(id);
-        //todo ???
-        Long AuthUserId = userRepository.findUserIdByUsername(username);
         comment.setId(id);
-        comment.setUserId(AuthUserId);
+        comment.setUserId(userId);
         comment.setUpdateDate(LocalDateTime.now());
         comment.setCreateDate(oldComment.getCreateDate());
         return commentMapper.entityToDto(
@@ -52,11 +50,11 @@ public class CommentService {
     }
 
     public Long delete(Long id) {
-        if (commentRepository.existsById(id)) {
-            //todo check on exists not necessary, handle exception if it needs
+        try {
+            //todo(?????) check on exists not necessary, handle exception if it needs
             commentRepository.deleteById(id);
             return id;
-        } else {
+        } catch (Exception ex) {
             throw new NotFoundException("Комментария не существует" + id);
         }
     }

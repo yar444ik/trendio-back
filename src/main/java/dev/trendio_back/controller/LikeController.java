@@ -19,14 +19,14 @@ public class LikeController {
     @PostMapping("/{requestId}")
     public LikeDto likeRequest(@AuthenticationPrincipal AuthUser authUser,
                                @PathVariable Long requestId) {
-        return likeService.likeRequest(authUser.getUsername(), requestId);
+        return likeService.likeRequest(authUser.getId(), requestId);
     }
 
     @DeleteMapping("/{requestId}")
     public void unlikeRequest(
             @AuthenticationPrincipal AuthUser authUser,
             @PathVariable Long requestId) {
-        likeService.unlikeRequest(authUser.getUsername(), requestId);
+        likeService.unlikeRequest(authUser.getId(), requestId);
     }
 
     @GetMapping("/request/{requestId}")

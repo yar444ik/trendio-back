@@ -12,6 +12,7 @@ import java.util.List;
 @Setter @Getter
 public class AuthUser implements UserDetails {
 
+    private Long id;
     private String password;
     private String username;
     private boolean enabled;

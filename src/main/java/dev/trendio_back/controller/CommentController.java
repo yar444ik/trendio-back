@@ -1,10 +1,12 @@
 package dev.trendio_back.controller;
 
 import dev.trendio_back.dto.CommentDto;
+import dev.trendio_back.dto.auth.AuthUser;
 import dev.trendio_back.service.CommentService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,17 +25,14 @@ public class CommentController {
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public CommentDto addComment(@RequestBody CommentDto comment) {
-        //todo principal or other
-        String username = AuthenticationController.getCurrentUsername();
-        return commentService.create(comment, username);
+    public CommentDto addComment(@AuthenticationPrincipal AuthUser authUser, @RequestBody CommentDto comment) {
+        return commentService.create(comment, authUser);
     }
 
     @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("@commentService.isCreator(authentication.name,#id)")
-    public CommentDto updateComment(@RequestBody CommentDto comment, @PathVariable Long id) {
-        String username = AuthenticationController.getCurrentUsername();
-        return commentService.update(comment, username, id);
+    public CommentDto updateComment(@AuthenticationPrincipal AuthUser authUser,@RequestBody CommentDto comment, @PathVariable Long id) {
+        return commentService.update(comment, authUser.getId(), id);
     }
 
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)

@@ -1,8 +1,9 @@
 package dev.trendio_back.controller;
 
+import dev.trendio_back.dto.auth.AuthUser;
 import dev.trendio_back.service.AvatarService;
 import lombok.AllArgsConstructor;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -13,10 +14,8 @@ public class AvatarController {
     private final AvatarService avatarService;
 
     @PostMapping("/upload")
-    public String uploadAvatar(@RequestParam("file") MultipartFile file) {
-        //todo use either principal or holder
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        return avatarService.uploadFile(file, username);
+    public String uploadAvatar(@AuthenticationPrincipal AuthUser authUser, @RequestParam("file") MultipartFile file) {
+        return avatarService.uploadFile(file, authUser.getId());
     }
 
     @GetMapping("/get/{filename}")

@@ -2,6 +2,7 @@ package dev.trendio_back.service;
 
 import dev.trendio_back.dto.RequestDto;
 import dev.trendio_back.dto.TagDto;
+import dev.trendio_back.dto.auth.AuthUser;
 import dev.trendio_back.dto.auth.SignInRequest;
 import dev.trendio_back.entity.auth.UserEntity;
 import dev.trendio_back.repository.UserRepository;
@@ -41,6 +42,9 @@ public class InitializerService {
                 .tags(tags)
                 .latitude(51.662856)
                 .longitude(39.1979146)
-                .build());
+                .build(),
+                AuthUser.builder()
+                        .id(user.getId())
+                        .build());
     }
 }

@@ -14,7 +14,6 @@ import java.util.List;
 public class TagController {
     private final TagService tagService;
 
-
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<TagDto> getAllTags() { return tagService.findAll(); }
 

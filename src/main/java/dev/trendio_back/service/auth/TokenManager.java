@@ -5,6 +5,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -22,13 +23,13 @@ public class TokenManager {
     private String jwtSecret;
 
 
-    public String generateJwtToken(UserDetails userDetails) {
+    public String generateJwtToken(Authentication authentication) {
         Map<String, Object> claims = new HashMap<>();
         return Jwts
                 .builder()
                 .claims().empty().add(claims)
                 .and()
-                .subject(userDetails.getUsername())
+                .subject(authentication.getName())
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + TOKEN_VALIDITY * 1000))
                 .signWith(getKey())
