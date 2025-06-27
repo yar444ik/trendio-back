@@ -28,13 +28,13 @@ services:
     image: minio/minio
     container_name: minio
     ports:
-      - "9000:9000"      # Порт для доступа к API/веб-интерфейсу
-      - "9001:9001"      # Порт для консоли управления
+      - "9000:9000"
+      - "9001:9001"
     environment:
-      - MINIO_ROOT_USER=minioadmin      # Замените на ваше имя пользователя
-      - MINIO_ROOT_PASSWORD=minioadmin   # Замените на ваш пароль
+      - MINIO_ROOT_USER=minioadmin
+      - MINIO_ROOT_PASSWORD=minioadmin
     volumes:
-      - minio_data:/data  # Том для хранения данных
+      - minio_data:/data
     command: server /data --console-address :9001
 
 volumes:
