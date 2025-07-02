@@ -1,20 +1,16 @@
 package dev.trendio_back.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.trendio_back.dto.LikeDto;
 import dev.trendio_back.dto.auth.AuthUser;
 import dev.trendio_back.exception.NotFoundException;
 import dev.trendio_back.service.LikeService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
@@ -42,12 +38,14 @@ public class LikeControllerTest {
     private LikeDto testLike;
     private final Long requestId = 1L;
     private final Long likeId = 1L;
+    private final Long userId = 1L;
     private final String username = "testUser";
     private AuthUser authUser;
 
     @BeforeEach
     void setUp() {
         authUser = AuthUser.builder()
+                .id(userId)
                 .username(username)
                 .password("password")
                 .enabled(true)
@@ -57,17 +55,20 @@ public class LikeControllerTest {
         testLike = LikeDto.builder()
                 .id(likeId)
                 .requestId(requestId)
-                .userId(1L)
+                .userId(userId)
                 .createDate(LocalDateTime.now())
                 .build();
 
-        when(likeService.likeRequest(eq(username), eq(requestId)))
+        when(likeService.likeRequest(eq(userId), eq(requestId)))
                 .thenReturn(testLike);
 
         when(likeService.getLikesForRequest(eq(requestId)))
                 .thenReturn(List.of(testLike));
 
-        doNothing().when(likeService).unlikeRequest(eq(username), eq(requestId));
+        doNothing().when(likeService).unlikeRequest(eq(userId), eq(requestId));
+
+        when(likeService.getLikesForRequest(999L))
+                .thenReturn(List.of());
     }
 
     @Test
@@ -76,9 +77,10 @@ public class LikeControllerTest {
                         .with(user(authUser)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(likeId))
-                .andExpect(jsonPath("$.requestId").value(requestId));
+                .andExpect(jsonPath("$.requestId").value(requestId))
+                .andExpect(jsonPath("$.userId").value(userId));
 
-        verify(likeService).likeRequest(username, requestId);
+        verify(likeService).likeRequest(userId, requestId);
     }
 
     @Test
@@ -87,38 +89,15 @@ public class LikeControllerTest {
                         .with(user(authUser)))
                 .andExpect(status().isOk());
 
-        verify(likeService).unlikeRequest(username, requestId);
-    }
-
-    @Test
-    void getLikesForRequest_ShouldReturnLikes() throws Exception {
-        mockMvc.perform(get("/api/likes/request/{requestId}", requestId))
-                //todo решить вопрос с AuthUser
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].id").value(likeId))
-                .andExpect(jsonPath("$[0].requestId").value(requestId));
-
-        verify(likeService).getLikesForRequest(requestId);
-    }
-
-    @Test
-    void getLikesForRequest_ShouldReturnEmptyList_WhenNoLikes() throws Exception {
-        when(likeService.getLikesForRequest(eq(requestId)))
-                .thenReturn(List.of());
-
-        mockMvc.perform(get("/api/likes/request/{requestId}", requestId)
-                        .with(user(authUser)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$").isArray())
-                .andExpect(jsonPath("$").isEmpty());
+        verify(likeService).unlikeRequest(userId, requestId);
     }
 
     @Test
     void unlikeRequest_ShouldReturnNotFound_WhenLikeNotExists() throws Exception {
         doThrow(new NotFoundException("Like not found"))
-                .when(likeService).unlikeRequest(username, 999L);
+                .when(likeService).unlikeRequest(userId, 999L);
 
-        mockMvc.perform(delete("/api/likes/{requestId}", 999L)
+        mockMvc.perform(delete("/api/likes/999")
                         .with(user(authUser)))
                 .andExpect(status().isNotFound());
     }

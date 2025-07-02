@@ -6,7 +6,6 @@ import dev.trendio_back.entity.LikeEntity;
 import dev.trendio_back.entity.RequestEntity;
 import dev.trendio_back.entity.auth.UserEntity;
 import dev.trendio_back.repository.LikeRepository;
-import dev.trendio_back.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +17,6 @@ import java.util.List;
 public class LikeService {
     private final LikeRepository likeRepository;
     private final LikeMapper likeMapper;
-    private final UserRepository userRepository;
 
     public LikeDto likeRequest(Long userId, Long requestId) {
         LikeEntity like = new LikeEntity();

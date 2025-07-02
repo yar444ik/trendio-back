@@ -65,6 +65,8 @@ public class AvatarService {
                 if (e.getCause() instanceof PSQLException psqlEx) {
                     if ("23505".equals(psqlEx.getSQLState())) {
                         throw new ExistsException(e.getMessage());
+                    } else {
+                        throw e;
                     }
                 }
             }

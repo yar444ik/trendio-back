@@ -1,14 +1,14 @@
 package dev.trendio_back.dto;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Data
 @Builder
 @ToString
+@AllArgsConstructor
+@NoArgsConstructor
 public class CommentDto {
     private Long id;
     private Long userId;
