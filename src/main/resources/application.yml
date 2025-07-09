@@ -35,6 +35,8 @@ minio:
   secret-key: ${MINIO_SECRET-KEY:minioadmin}
   bucket: avatars
 
+comments:
+  type: flat
 
 service:
   name: trendioBack

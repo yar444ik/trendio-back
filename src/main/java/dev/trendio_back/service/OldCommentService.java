@@ -17,7 +17,7 @@ import java.util.List;
 @Service
 @Component
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-public class CommentService {
+public class OldCommentService {
     private final CommentRepository commentRepository;
     private final CommentMapper commentMapper;
 
@@ -37,10 +37,10 @@ public class CommentService {
                 commentRepository.save(commentMapper.dtoToEntity(comment)));
     }
 
-    public CommentDto update (CommentDto comment, Long userId, Long id) {
+    public CommentDto update (CommentDto comment, AuthUser authUser, Long id) {
         CommentEntity oldComment = commentRepository.findByRequestId(id);
         comment.setId(id);
-        comment.setUserId(userId);
+        comment.setUserId(authUser.getId());
         comment.setUpdateDate(LocalDateTime.now());
         comment.setCreateDate(oldComment.getCreateDate());
         return commentMapper.entityToDto(
