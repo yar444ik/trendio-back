@@ -1,6 +1,5 @@
 package dev.trendio_back.service;
 
-import dev.trendio_back.annotations.SaveLog;
 import dev.trendio_back.dto.CommentDto;
 import dev.trendio_back.dto.auth.AuthUser;
 import dev.trendio_back.dto.mapper.CommentMapper;
@@ -18,7 +17,7 @@ import java.util.List;
 @Service
 @Component
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-public class OldCommentService {
+public class CommentService {
     private final CommentRepository commentRepository;
     private final CommentMapper commentMapper;
 

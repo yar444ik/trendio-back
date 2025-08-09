@@ -2,7 +2,7 @@ package dev.trendio_back.controller;
 
 import dev.trendio_back.dto.CommentDto;
 import dev.trendio_back.dto.auth.AuthUser;
-import dev.trendio_back.service.OldCommentService;
+import dev.trendio_back.service.CommentService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class CommentControllerTest {
 
     @Mock
-    private OldCommentService oldCommentService;
+    private CommentService commentService;
 
     @InjectMocks
     private CommentController commentController;
@@ -68,19 +68,19 @@ class CommentControllerTest {
     @Test
     void getCommentsForRequest_ShouldReturnComments() throws Exception {
         List<CommentDto> comments = Collections.singletonList(commentDto);
-        when(oldCommentService.findAllForRequest(anyLong())).thenReturn(comments);
+        when(commentService.findAllForRequest(anyLong())).thenReturn(comments);
 
         mockMvc.perform(get("/api/comments/request/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id").value(1L))
                 .andExpect(jsonPath("$[0].text").value("Test comment"));
 
-        verify(oldCommentService).findAllForRequest(1L);
+        verify(commentService).findAllForRequest(1L);
     }
 
     @Test
     void addComment_ShouldReturnCreatedComment() throws Exception {
-        when(oldCommentService.create(any(CommentDto.class), any(AuthUser.class))).thenReturn(commentDto);
+        when(commentService.create(any(CommentDto.class), any(AuthUser.class))).thenReturn(commentDto);
 
         mockMvc.perform(post("/api/comments")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -89,12 +89,12 @@ class CommentControllerTest {
                 .andExpect(jsonPath("$.id").value(1L))
                 .andExpect(jsonPath("$.text").value("Test comment"));
 
-        verify(oldCommentService).create(any(CommentDto.class), any(AuthUser.class));
+        verify(commentService).create(any(CommentDto.class), any(AuthUser.class));
     }
 
     @Test
     void updateComment_ShouldReturnUpdatedComment() throws Exception {
-        when(oldCommentService.update(any(CommentDto.class), anyLong(), anyLong())).thenReturn(commentDto);
+        when(commentService.update(any(CommentDto.class), anyLong(), anyLong())).thenReturn(commentDto);
 
         mockMvc.perform(put("/api/comments/1")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -103,17 +103,17 @@ class CommentControllerTest {
                 .andExpect(jsonPath("$.id").value(1L))
                 .andExpect(jsonPath("$.text").value("Test comment"));
 
-        verify(oldCommentService).update(any(CommentDto.class), anyLong(), eq(1L));
+        verify(commentService).update(any(CommentDto.class), anyLong(), eq(1L));
     }
 
     @Test
     void deleteComment_ShouldReturnDeletedCommentId() throws Exception {
-        when(oldCommentService.delete(anyLong())).thenReturn(1L);
+        when(commentService.delete(anyLong())).thenReturn(1L);
 
         mockMvc.perform(delete("/api/comments/1"))
                 .andExpect(status().isOk())
                 .andExpect(content().string("1"));
 
-        verify(oldCommentService).delete(1L);
+        verify(commentService).delete(1L);
     }
 }
