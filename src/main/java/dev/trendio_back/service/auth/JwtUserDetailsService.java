@@ -1,5 +1,6 @@
 package dev.trendio_back.service.auth;
 
+import dev.trendio_back.annotations.SaveLog;
 import dev.trendio_back.dto.auth.AuthUser;
 import dev.trendio_back.dto.auth.Role;
 import dev.trendio_back.dto.auth.SignInRequest;
@@ -39,7 +40,7 @@ public class JwtUserDetailsService implements UserDetailsService {
                 .build();
     }
 
-
+    @SaveLog(action = "CREATE")
     public SignInResponse createUser(SignInRequest request) throws ExistsException {
         Optional<UserEntity> user = userRepository.findByUsername(request.getUsername());
         if (user.isPresent()) {

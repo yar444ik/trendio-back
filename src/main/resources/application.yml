@@ -21,9 +21,15 @@ spring:
     multipart:
       max-file-size: 50MB
       max-request-size: 50MB
+  kafka:
+    bootstrap-servers: localhost:29092
 #    properties:
 #      hibernate:
 #        show_sql: true
+
+topic:
+  name: user_actions
+
 log4j:
   appender:
     FILE:

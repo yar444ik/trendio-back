@@ -1,5 +1,6 @@
 package dev.trendio_back.service;
 
+import dev.trendio_back.annotations.SaveLog;
 import dev.trendio_back.dto.CommentDto;
 import dev.trendio_back.dto.auth.AuthUser;
 import dev.trendio_back.dto.mapper.CommentMapper;
@@ -49,7 +50,6 @@ public class OldCommentService {
 
     public Long delete(Long id) {
         try {
-            //todo(???правильно ли исправил???) check on exists not necessary, handle exception if it needs
             commentRepository.deleteById(id);
             return id;
         } catch (Exception ex) {

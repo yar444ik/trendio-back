@@ -1,5 +1,6 @@
 package dev.trendio_back.service;
 
+import dev.trendio_back.annotations.SaveLog;
 import dev.trendio_back.dto.RequestDto;
 import dev.trendio_back.dto.TagDto;
 import dev.trendio_back.dto.auth.AuthUser;
@@ -33,6 +34,7 @@ public class RequestService {
         return requestEntities.map(requestMapper::entityToDto);
     }
 
+    @SaveLog(action = "CREATE")
     public RequestDto create(RequestDto request, AuthUser authUser) {
         request.setUserId(authUser.getId());
         request.setUsername(authUser.getUsername());
@@ -43,6 +45,7 @@ public class RequestService {
         return requestMapper.entityToDto(requestEntity);
     }
 
+    @SaveLog(action = "DELETE", entityClass = "RequestId")
     public Long delete(Long id, AuthUser authUser) {
         RequestEntity requestEntity = requestRepository.findByUserIdAndId(authUser.getId(), id)
                 .orElseThrow(() -> new AccessDeniedException("You don't have permission to update this request"));
@@ -50,6 +53,7 @@ public class RequestService {
         return id;
     }
 
+    @SaveLog(action = "UPDATE")
     public RequestDto update(RequestDto request, AuthUser authUser, Long id) {
         RequestEntity oldRequestEntity = requestRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Request not found"));
